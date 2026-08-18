@@ -112,6 +112,47 @@ and `woocommerce` organisations.
 which does not reach the network from WebAssembly, so the demo covers the admin UI, settings
 and order screens — not live syncing.
 
+## Releasing to WordPress.org
+
+The plugin is published as **`e-financials-for-woocommerce`**. That slug is also the text
+domain and the main file name, and it must stay in sync with all three.
+
+```bash
+composer build          # dist/e-financials-for-woocommerce.zip, built from .distignore
+```
+
+The script installs production-only dependencies, refuses to build when the plugin header
+`Version` and the readme.txt `Stable tag` disagree, and fails if the zip would exceed the
+10 MB submission limit. Verify a build the way the review team does, using
+[Plugin Check](https://wordpress.org/plugins/plugin-check/) inside `wp-env`:
+
+```bash
+npm start
+npx wp-env run cli wp plugin install <path-to-zip> --force
+npx wp-env run cli wp plugin check e-financials-for-woocommerce \
+  --categories=general,plugin_repo,security,performance,accessibility --include-experimental
+```
+
+Releases are cut by tagging and publishing a GitHub release whose tag matches both version
+fields; `.github/workflows/deploy-wordpress-org.yml` then pushes trunk, the tag and the
+`/assets` directory to SVN. Copy-only changes (readme wording, screenshots, a "Tested up to"
+bump) go out through `.github/workflows/update-wordpress-org-assets.yml` on push to `main`.
+Both need the `SVN_USERNAME` / `SVN_PASSWORD` repository secrets.
+
+Plugin page artwork lives in `.wordpress-org/` and never ships inside the zip. It is
+generated, not hand-drawn:
+
+```bash
+node bin/assets/render.mjs        # icon + banner PNGs from bin/assets/mark.svg
+npx wp-env run cli wp eval-file \
+  wp-content/plugins/<dir>/bin/assets/seed-screenshots.php
+node bin/assets/screenshots.mjs   # screenshot-1..3 from the running admin
+
+# The seed wipes orders and fills in the integration settings. Reset it before
+# running e2e again — the suite expects an unconfigured settings screen.
+npx wp-env run cli wp option delete woocommerce_efinancials_integration_settings
+```
+
 ## License
 
 Copyright (c) 2026 Arbictus OÜ.
@@ -124,9 +165,12 @@ There is no restriction on production use, company size, or revenue, and no non-
 versus commercial distinction. You may run it on any number of sites, modify it, and
 redistribute it under the same terms, free of charge and forever.
 
-Paid subscriptions cover **automatic updates and support only** — a service, never
-permission to use the code. See **[COMMERCIAL.md](COMMERCIAL.md)**. When a subscription
-lapses the plugin keeps working; you simply stop receiving updates.
+Releases are distributed free through the
+[WordPress.org plugin directory](https://wordpress.org/plugins/e-financials-for-woocommerce/),
+so every install updates at no cost and there is no licence key or premium build. Paid
+subscriptions cover **support only** — a service, never permission to use the code, and
+never access to functionality. See **[COMMERCIAL.md](COMMERCIAL.md)**. When a subscription
+lapses the plugin keeps working and keeps updating; you simply stop receiving support.
 
 The "Arbictus" name and logo, and the product name "e-Financials for WooCommerce", are
 trademarks and are not licensed by the GPL. Forks are welcome under a different name.

@@ -20,30 +20,41 @@ under GPL-2.0-or-later and GPL-3.0-or-later respectively. That means:
 Any purchase described below buys a **service**, not permission to use the code.
 You never need to pay to run this plugin legally.
 
+## Updates are free, for everyone
+
+The plugin is distributed through the [WordPress.org plugin
+directory](https://wordpress.org/plugins/e-financials-for-woocommerce/). Every
+release — including compatibility updates as WordPress, WooCommerce and the
+e-Financials API change — reaches every install through the normal WordPress
+update mechanism, at no cost and with no licence key.
+
+There is no premium build, no paid update channel and no bundled updater. What
+you install from WordPress.org is the whole plugin.
+
 ## What a subscription actually buys
 
-The GPL obliges us to license the code. It does not oblige us to operate a
-download service, publish updates, or answer support requests. Those are what a
-paid subscription covers:
+The GPL obliges us to license the code. It does not oblige us to answer support
+requests or take on someone else's accounting problem. That is what a paid
+subscription covers:
 
-1. **Automatic updates** — a licence key that enables in-dashboard update
-   notifications and one-click upgrades for the duration of the subscription.
-2. **New releases** — access to the release channel, including compatibility
-   updates as WordPress, WooCommerce, and the e-Financials API change.
-3. **Support** — email support for installation, configuration, and sync
+1. **Support** — email support for installation, configuration, and sync
    problems, with a defined response target.
-4. **Priority on fixes** — bugs reported by subscribers are triaged first.
+2. **Priority on fixes** — bugs reported by subscribers are triaged first.
+3. **Advice** — help mapping your VAT rates, sale articles and payment methods
+   onto your own e-Financials setup.
 
-When a subscription lapses, the plugin keeps working. You simply stop receiving
-updates and support. We will not disable, degrade, or time-bomb any installed
-version — doing so would conflict with the GPL rights you already hold.
+When a subscription lapses, the plugin keeps working and keeps updating. You
+simply stop receiving support. We will not disable, degrade, or time-bomb any
+installed version — doing so would conflict both with the GPL rights you already
+hold and with the WordPress.org plugin guidelines.
 
 ## Source code access
 
-Every subscriber receives complete, unobfuscated source for any version we
-distribute to them, and may redistribute it under GPL-2.0-or-later. We consider
-this a feature, not a loophole: you are never locked in, and you can always fork
-if we stop maintaining the plugin.
+The complete, unobfuscated source of every released version is public: on
+[GitHub](https://github.com/aanndryyyy/e-financials-woocommerce-integration) and
+in the plugin's WordPress.org SVN repository. Anyone may redistribute it under
+GPL-2.0-or-later. We consider this a feature, not a loophole: you are never
+locked in, and you can always fork if we stop maintaining the plugin.
 
 ## What is *not* covered by the GPL
 
