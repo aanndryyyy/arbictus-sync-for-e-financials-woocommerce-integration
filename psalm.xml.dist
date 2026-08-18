@@ -8,7 +8,7 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <file name="e-financials-integration.php" />
+        <file name="e-financials-for-woocommerce.php" />
         <directory name="src" />
     </projectFiles>
 

@@ -19,7 +19,7 @@ final class Plugin {
 	 */
 	public static function file(): string {
 
-		return \dirname( __DIR__ ) . '/e-financials-integration.php';
+		return \dirname( __DIR__ ) . '/e-financials-for-woocommerce.php';
 	}
 
 	/**

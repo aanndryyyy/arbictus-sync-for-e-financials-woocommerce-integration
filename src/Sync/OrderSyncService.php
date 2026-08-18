@@ -119,7 +119,7 @@ class OrderSyncService {
 				$order->add_order_note(
 					\sprintf(
 						/* translators: %s: error message */
-						__( 'e-Financials sync failed: %s', 'e-financials' ),
+						__( 'e-Financials sync failed: %s', 'e-financials-for-woocommerce' ),
 						$message
 					)
 				);

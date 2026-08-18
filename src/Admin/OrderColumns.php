@@ -45,7 +45,7 @@ class OrderColumns implements ServiceInterface {
 	 */
 	public function add_column( array $columns ): array {
 
-		$label = __( 'e-Financials', 'e-financials' );
+		$label = __( 'e-Financials', 'e-financials-for-woocommerce' );
 
 		// Insert before WooCommerce's actions column, which conventionally stays last.
 		if ( ! isset( $columns['wc_actions'] ) ) {
@@ -135,11 +135,11 @@ class OrderColumns implements ServiceInterface {
 		}
 
 		if ( $credit > 0 ) {
-			$parts[] = \esc_html__( 'credit', 'e-financials' );
+			$parts[] = \esc_html__( 'credit', 'e-financials-for-woocommerce' );
 		}
 
 		if ( $error !== '' ) {
-			$parts[] = '<span style="color:#b32d2e" title="' . \esc_attr( $error ) . '">' . \esc_html__( 'error', 'e-financials' ) . '</span>';
+			$parts[] = '<span style="color:#b32d2e" title="' . \esc_attr( $error ) . '">' . \esc_html__( 'error', 'e-financials-for-woocommerce' ) . '</span>';
 		}
 
 		return \implode( ' · ', $parts );

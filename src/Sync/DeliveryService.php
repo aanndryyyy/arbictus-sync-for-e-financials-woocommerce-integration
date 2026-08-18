@@ -108,7 +108,7 @@ class DeliveryService {
 		$order->update_meta_data( OrderMetaKeys::DELIVERED_AT, \gmdate( 'c' ) );
 		$order->save();
 
-		$order->add_order_note( __( 'e-Financials invoice delivered to customer.', 'e-financials' ) );
+		$order->add_order_note( __( 'e-Financials invoice delivered to customer.', 'e-financials-for-woocommerce' ) );
 
 		$this->logger->info(
 			'Delivered sale invoice.',

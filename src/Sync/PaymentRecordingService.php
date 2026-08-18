@@ -209,7 +209,7 @@ class PaymentRecordingService {
 		$order->add_order_note(
 			\sprintf(
 				/* translators: %d: transaction id */
-				__( 'e-Financials payment transaction registered (#%d).', 'e-financials' ),
+				__( 'e-Financials payment transaction registered (#%d).', 'e-financials-for-woocommerce' ),
 				$tx_id
 			)
 		);

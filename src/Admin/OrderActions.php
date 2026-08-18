@@ -74,8 +74,8 @@ class OrderActions implements ServiceInterface {
 			return $actions;
 		}
 
-		$actions[ self::ACTION_SYNC ]    = __( 'Send / resend to e-Financials', 'e-financials' );
-		$actions[ self::ACTION_DELIVER ] = __( 'Deliver e-Financials invoice', 'e-financials' );
+		$actions[ self::ACTION_SYNC ]    = __( 'Send / resend to e-Financials', 'e-financials-for-woocommerce' );
+		$actions[ self::ACTION_DELIVER ] = __( 'Deliver e-Financials invoice', 'e-financials-for-woocommerce' );
 
 		return $actions;
 	}
@@ -116,7 +116,7 @@ class OrderActions implements ServiceInterface {
 		$invoice_id = OrderMeta::get_int( $order, OrderMetaKeys::SALE_INVOICE_ID );
 
 		if ( $invoice_id <= 0 ) {
-			$order->add_order_note( __( 'Cannot deliver: no e-Financials invoice on this order.', 'e-financials' ) );
+			$order->add_order_note( __( 'Cannot deliver: no e-Financials invoice on this order.', 'e-financials-for-woocommerce' ) );
 			$order->save();
 
 			return;
@@ -130,7 +130,7 @@ class OrderActions implements ServiceInterface {
 			$order->add_order_note(
 				\sprintf(
 					/* translators: %s: error */
-					__( 'e-Financials deliver failed: %s', 'e-financials' ),
+					__( 'e-Financials deliver failed: %s', 'e-financials-for-woocommerce' ),
 					$message
 				)
 			);

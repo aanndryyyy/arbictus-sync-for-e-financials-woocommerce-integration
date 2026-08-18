@@ -39,7 +39,7 @@ final class ErrorMessage {
 		$message = \trim( \preg_replace( '/\s+/', ' ', $message ) ?? $message );
 
 		if ( $message === '' ) {
-			$message = __( 'Unknown e-Financials API error.', 'e-financials' );
+			$message = __( 'Unknown e-Financials API error.', 'e-financials-for-woocommerce' );
 		}
 
 		if ( \mb_strlen( $message ) > self::MAX_LENGTH ) {

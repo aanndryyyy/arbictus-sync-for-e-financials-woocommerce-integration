@@ -7,7 +7,7 @@
       "request": "launch",
       "port": 9003,
       "pathMappings": {
-        "/var/www/html/wp-content/plugins/e-financials-integration": "${workspaceFolder}/"
+        "/var/www/html/wp-content/plugins/e-financials-woocommerce-integration": "${workspaceFolder}/"
       }
     }
   ]
