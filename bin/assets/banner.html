@@ -1,0 +1,49 @@
+<!doctype html>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; padding: 0; }
+  body {
+    width: 1544px; height: 500px;
+    font-family: Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(120deg, #12365f 0%, #0d5a6b 55%, #0a7d76 100%);
+    color: #fff;
+    display: flex; align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .glow {
+    position: absolute; right: -140px; top: -180px;
+    width: 780px; height: 780px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(127,227,210,.28) 0%, rgba(127,227,210,0) 68%);
+  }
+  .wrap { display: flex; align-items: center; gap: 72px; padding: 0 96px; position: relative; }
+  .mark { flex: 0 0 auto; }
+  h1 { font-size: 78px; font-weight: 800; margin: 0 0 18px; letter-spacing: -1.6px; line-height: 1.02; }
+  h1 span { color: #7fe3d2; }
+  p { font-size: 34px; font-weight: 400; margin: 0; color: #cfe3ee; line-height: 1.32; max-width: 760px; }
+  .chips { display: flex; gap: 14px; margin-top: 32px; }
+  .chip {
+    font-size: 23px; font-weight: 600; letter-spacing: .2px;
+    padding: 11px 22px; border-radius: 999px;
+    background: rgba(255,255,255,.11);
+    border: 1px solid rgba(127,227,210,.34);
+    color: #e8f6f3;
+  }
+</style>
+<div class="glow"></div>
+<div class="wrap">
+  <div class="mark">
+    <img src="mark.svg" alt="" width="248" height="248">
+  </div>
+  <div class="copy">
+    <h1>e-Financials<br><span>for WooCommerce</span></h1>
+    <p>Orders, customers, products and invoices synced straight into your e-Arveldaja books.</p>
+    <div class="chips">
+      <div class="chip">Sale invoices</div>
+      <div class="chip">Payments</div>
+      <div class="chip">Credit invoices</div>
+      <div class="chip">HPOS ready</div>
+    </div>
+  </div>
+</div>

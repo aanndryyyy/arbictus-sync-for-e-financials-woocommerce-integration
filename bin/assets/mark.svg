@@ -1,0 +1,40 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="e-Financials for WooCommerce">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#123a63"/>
+      <stop offset="100%" stop-color="#0a7d76"/>
+    </linearGradient>
+    <linearGradient id="sheet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#dfe9f1"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+
+  <!-- Sync ring: two arcs chasing each other around the invoice. -->
+  <g fill="#7fe3d2" stroke="#7fe3d2" stroke-width="26" stroke-linecap="butt">
+    <path d="M 77.5 321 A 190 190 0 0 0 434.5 321" fill="none"/>
+    <g transform="translate(434.5 321) rotate(-70)">
+      <path d="M 0 -27 L 42 0 L 0 27 Z" stroke="none"/>
+    </g>
+
+    <path d="M 434.5 191 A 190 190 0 0 0 77.5 191" fill="none"/>
+    <g transform="translate(77.5 191) rotate(110)">
+      <path d="M 0 -27 L 42 0 L 0 27 Z" stroke="none"/>
+    </g>
+  </g>
+
+  <!-- The invoice itself. -->
+  <g transform="translate(181 155)">
+    <rect x="0" y="0" width="150" height="190" rx="14" fill="url(#sheet)"/>
+    <path d="M150 0 L150 38 L112 0 Z" fill="#b9cddd"/>
+
+    <rect x="24" y="48" width="86" height="13" rx="6.5" fill="#123a63" opacity=".9"/>
+    <rect x="24" y="82" width="66" height="11" rx="5.5" fill="#123a63" opacity=".32"/>
+    <rect x="24" y="108" width="82" height="11" rx="5.5" fill="#123a63" opacity=".32"/>
+    <rect x="24" y="134" width="50" height="11" rx="5.5" fill="#123a63" opacity=".32"/>
+
+    <rect x="76" y="158" width="50" height="15" rx="7.5" fill="#0a9a90"/>
+  </g>
+</svg>
