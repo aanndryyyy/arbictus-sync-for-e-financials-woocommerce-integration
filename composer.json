@@ -50,11 +50,19 @@
         }
     },
     "scripts": {
+        "build": "bin/build-zip.sh",
         "test:unit": "@php ./vendor/bin/phpunit",
         "test:phpcs": "@php ./vendor/bin/phpcs",
         "test:phpstan": "@php ./vendor/bin/phpstan analyze",
         "test:psalm": "@php ./vendor/bin/psalm",
-        "test:static": [ "@test:phpcs", "@test:phpstan", "@test:psalm" ],
-        "test": [ "@test:unit", "@test:static" ]
+        "test:static": [
+            "@test:phpcs",
+            "@test:phpstan",
+            "@test:psalm"
+        ],
+        "test": [
+            "@test:unit",
+            "@test:static"
+        ]
     }
 }

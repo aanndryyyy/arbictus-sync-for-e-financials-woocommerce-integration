@@ -1,0 +1,37 @@
+# Files and directories that must not ship in the WordPress.org / Playground zip.
+# Consumed by bin/build-zip.sh and .github/workflows/playground.yml.
+
+/.git
+/.github
+/.devcontainer
+/.cursor
+/.vscode
+/.omc
+/.wordpress-org
+/bin
+/build
+/dist
+/blueprints
+/docs
+/node_modules
+/tests
+/vendor-bin
+/.distignore
+/.editorconfig
+/.env
+/.env.example
+/.gitattributes
+/.gitignore
+/.phpunit.result.cache
+/.wp-env.json
+/.wp-env.override.json
+/AGENTS.md
+/COMMERCIAL.md
+/README.md
+/composer.lock
+/package.json
+/package-lock.json
+/phpcs.xml.dist
+/phpstan.neon.dist
+/phpunit.xml.dist
+/psalm.xml.dist

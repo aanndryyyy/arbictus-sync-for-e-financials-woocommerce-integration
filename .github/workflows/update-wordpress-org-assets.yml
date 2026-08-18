@@ -1,0 +1,35 @@
+name: Update WordPress.org readme and assets
+
+# Pushes readme.txt and .wordpress-org/ (icon, banner, screenshots) to SVN
+# without cutting a release. Use this for copy fixes, screenshot refreshes and
+# "Tested up to" bumps — WordPress.org reads those from trunk, not from the
+# stable tag.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - readme.txt
+      - .wordpress-org/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  update:
+    name: Update
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Update the plugin page
+        uses: 10up/action-wordpress-plugin-asset-update@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: e-financials-for-woocommerce
+          ASSETS_DIR: .wordpress-org

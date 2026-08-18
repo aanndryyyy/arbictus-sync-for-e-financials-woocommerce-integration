@@ -1,0 +1,87 @@
+name: Deploy to WordPress.org
+
+# Publishes a published GitHub release to the WordPress.org plugin directory,
+# following the pattern used by other WooCommerce extensions on wp.org
+# (e.g. Packeta): 10up/action-wordpress-plugin-deploy driven by .distignore.
+#
+# Prerequisites (one-off, after the plugin is approved and the SVN repo exists):
+#   1. Repository secrets SVN_USERNAME and SVN_PASSWORD — the WordPress.org
+#      account that owns the plugin (Settings > Secrets and variables > Actions).
+#   2. A GitHub release whose tag matches both the plugin header `Version` and
+#      the readme.txt `Stable tag`, e.g. `1.0.0`.
+#
+# The action reads .distignore to decide what goes into SVN trunk/, and pushes
+# .wordpress-org/ (icon, banner, screenshots) to the SVN assets/ directory —
+# those never end up inside the plugin zip.
+
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+          coverage: none
+
+      # On a release, GITHUB_REF_NAME is the tag. On manual dispatch it is the
+      # branch, so there is no tag to agree with — build-zip.sh still enforces
+      # that the plugin header and readme.txt Stable tag match each other.
+      - name: Verify the tag, plugin header and stable tag agree
+        if: github.event_name == 'release'
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          VERSION="$(sed -n 's/^ \* Version:[[:space:]]*//p' e-financials-for-woocommerce.php | head -1)"
+          STABLE="$(sed -n 's/^Stable tag:[[:space:]]*//p' readme.txt | head -1)"
+
+          echo "tag=${TAG} header=${VERSION} stable tag=${STABLE}"
+
+          if [ "${TAG}" != "${VERSION}" ] || [ "${TAG}" != "${STABLE}" ]; then
+            echo "::error::Tag, plugin header Version and readme.txt Stable tag must all match."
+            exit 1
+          fi
+
+      # Deliberately the same script used locally, so what reaches SVN is the
+      # tree that gets tested — including the vendor pruning, which .distignore
+      # alone cannot express.
+      - name: Build the distributable tree
+        env:
+          SKIP_DEV_RESTORE: '1'
+        run: bin/build-zip.sh
+
+      - name: Install Subversion
+        run: sudo apt-get update && sudo apt-get install -y subversion
+
+      - name: WordPress plugin deploy
+        id: deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        with:
+          generate-zip: true
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: e-financials-for-woocommerce
+          BUILD_DIR: dist/e-financials-for-woocommerce
+          ASSETS_DIR: .wordpress-org
+
+      - name: Attach the built zip to the GitHub release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ github.workspace }}/e-financials-for-woocommerce.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

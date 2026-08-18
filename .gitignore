@@ -16,3 +16,5 @@
 .env
 .omc/
 .phpunit.result.cache
+/dist/
+/build/
