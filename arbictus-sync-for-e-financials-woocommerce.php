@@ -9,7 +9,7 @@
  *
  * @wordpress-plugin
  * Plugin Name: Arbictus Sync for e-Financials and WooCommerce
- * Plugin URI: https://github.com/aanndryyyy/e-financials-woocommerce-integration
+ * Plugin URI: https://github.com/aanndryyyy/arbictus-sync-for-e-financials-woocommerce-integration
  * Description: Bookkeeping sync between your shop and e-Financials (E-arveldaja liidestus).
  * Version: 1.0.0
  * Author: Arbictus OÜ

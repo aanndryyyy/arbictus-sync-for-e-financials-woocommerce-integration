@@ -51,7 +51,7 @@ hold and with the WordPress.org plugin guidelines.
 ## Source code access
 
 The complete, unobfuscated source of every released version is public: on
-[GitHub](https://github.com/aanndryyyy/e-financials-woocommerce-integration) and
+[GitHub](https://github.com/aanndryyyy/arbictus-sync-for-e-financials-woocommerce-integration) and
 in the plugin's WordPress.org SVN repository. Anyone may redistribute it under
 GPL-2.0-or-later. We consider this a feature, not a loophole: you are never
 locked in, and you can always fork if we stop maintaining the plugin.
