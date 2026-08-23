@@ -4,7 +4,7 @@ Copyright (c) 2026 Arbictus OÜ.
 
 ## Read this first: the plugin is GPL, and stays GPL
 
-**e-Financials for WooCommerce is free software licensed under
+**Arbictus Sync for e-Financials and WooCommerce is free software licensed under
 [GPL-2.0-or-later](LICENSE). Nothing on this page restricts that.**
 
 This plugin runs inside WordPress and WooCommerce, which are themselves licensed
@@ -23,7 +23,7 @@ You never need to pay to run this plugin legally.
 ## Updates are free, for everyone
 
 The plugin is distributed through the [WordPress.org plugin
-directory](https://wordpress.org/plugins/e-financials-for-woocommerce/). Every
+directory](https://wordpress.org/plugins/arbictus-sync-for-e-financials-woocommerce/). Every
 release — including compatibility updates as WordPress, WooCommerce and the
 e-Financials API change — reaches every install through the normal WordPress
 update mechanism, at no cost and with no licence key.
@@ -61,7 +61,7 @@ locked in, and you can always fork if we stop maintaining the plugin.
 Two things are ours and are not licensed to you by the GPL:
 
 - **Trademarks.** The "Arbictus" name and logo, and the product name
-  "e-Financials for WooCommerce", are not covered by the code license. A fork is
+  "Arbictus Sync for e-Financials and WooCommerce", are not covered by the code license. A fork is
   welcome; it must simply carry its own name and not imply that we published or
   endorse it.
 - **Hosted services.** Any service we operate on our own servers is separate

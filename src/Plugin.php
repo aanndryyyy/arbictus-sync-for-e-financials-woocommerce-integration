@@ -19,7 +19,7 @@ final class Plugin {
 	 */
 	public static function file(): string {
 
-		return \dirname( __DIR__ ) . '/e-financials-for-woocommerce.php';
+		return \dirname( __DIR__ ) . '/arbictus-sync-for-e-financials-woocommerce.php';
 	}
 
 	/**

@@ -10,7 +10,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SLUG="e-financials-for-woocommerce"
+SLUG="arbictus-sync-for-e-financials-woocommerce"
 DIST="${ROOT}/dist"
 STAGE="${DIST}/${SLUG}"
 

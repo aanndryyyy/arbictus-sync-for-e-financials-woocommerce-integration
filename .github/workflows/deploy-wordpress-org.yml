@@ -45,7 +45,7 @@ jobs:
         if: github.event_name == 'release'
         run: |
           TAG="${GITHUB_REF_NAME}"
-          VERSION="$(sed -n 's/^ \* Version:[[:space:]]*//p' e-financials-for-woocommerce.php | head -1)"
+          VERSION="$(sed -n 's/^ \* Version:[[:space:]]*//p' arbictus-sync-for-e-financials-woocommerce.php | head -1)"
           STABLE="$(sed -n 's/^Stable tag:[[:space:]]*//p' readme.txt | head -1)"
 
           echo "tag=${TAG} header=${VERSION} stable tag=${STABLE}"
@@ -74,14 +74,14 @@ jobs:
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          SLUG: e-financials-for-woocommerce
-          BUILD_DIR: dist/e-financials-for-woocommerce
+          SLUG: arbictus-sync-for-e-financials-woocommerce
+          BUILD_DIR: dist/arbictus-sync-for-e-financials-woocommerce
           ASSETS_DIR: .wordpress-org
 
       - name: Attach the built zip to the GitHub release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ github.workspace }}/e-financials-for-woocommerce.zip
+          files: ${{ github.workspace }}/arbictus-sync-for-e-financials-woocommerce.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

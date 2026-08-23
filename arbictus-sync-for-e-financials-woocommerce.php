@@ -1,6 +1,6 @@
 <?php
 /**
- * Bootstraps the e-Financials for WooCommerce plugin.
+ * Bootstraps the Arbictus Sync for e-Financials and WooCommerce plugin.
  *
  * @package Arbictus\EFinancialsPlugin
  *
@@ -8,7 +8,7 @@
  * @license   GPL-2.0-or-later
  *
  * @wordpress-plugin
- * Plugin Name: e-Financials for WooCommerce
+ * Plugin Name: Arbictus Sync for e-Financials and WooCommerce
  * Plugin URI: https://github.com/aanndryyyy/e-financials-woocommerce-integration
  * Description: Bookkeeping sync between your shop and e-Financials (E-arveldaja liidestus).
  * Version: 1.0.0
@@ -25,7 +25,7 @@
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
- * Text Domain: e-financials-for-woocommerce
+ * Text Domain: arbictus-sync-for-e-financials-woocommerce
  */
 
 declare(strict_types=1);

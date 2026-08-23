@@ -1,4 +1,4 @@
-=== e-Financials for WooCommerce ===
+=== Arbictus Sync for e-Financials and WooCommerce ===
 Contributors: aanndryyyy
 Tags: accounting, invoices, bookkeeping, e-arveldaja, estonia
 Requires at least: 6.5
@@ -12,6 +12,11 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Sync orders, customers, products and invoices from your shop to e-Financials (e-Arveldaja) bookkeeping.
 
 == Description ==
+
+An independent integration built by Arbictus OÜ. It is not affiliated with, endorsed by or
+sponsored by Registrite ja Infosüsteemide Keskus (RIK), the operator of e-Financials /
+e-Arveldaja, nor by Automattic, the owner of the WooCommerce trademark. "e-Financials",
+"e-Arveldaja" and "WooCommerce" are used here only to describe what this plugin connects to.
 
 Background sync so checkout stays fast. Once an order reaches a configured status the plugin:
 

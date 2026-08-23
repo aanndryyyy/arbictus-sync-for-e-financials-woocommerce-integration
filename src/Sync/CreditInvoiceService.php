@@ -137,7 +137,7 @@ class CreditInvoiceService {
 		$order->add_order_note(
 			\sprintf(
 				/* translators: %d: credit invoice id */
-				__( 'e-Financials credit sale invoice created (#%d).', 'e-financials-for-woocommerce' ),
+				__( 'e-Financials credit sale invoice created (#%d).', 'arbictus-sync-for-e-financials-woocommerce' ),
 				$credit_id
 			)
 		);
@@ -308,7 +308,7 @@ class CreditInvoiceService {
 			$this->products->ensure_generic_line_id(),
 			\sprintf(
 				/* translators: %d: refund id */
-				__( 'Refund #%d', 'e-financials-for-woocommerce' ),
+				__( 'Refund #%d', 'arbictus-sync-for-e-financials-woocommerce' ),
 				$refund->get_id()
 			),
 			1.0,
