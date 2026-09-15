@@ -84,9 +84,10 @@ class EFinancialsIntegration extends \WC_Integration {
 	 */
 	public function init_form_fields(): void {
 
-		$series_options   = $this->safe_id_options( 'series', [ $this, 'fetch_invoice_series_options' ] );
-		$template_options = $this->safe_id_options( 'templates', [ $this, 'fetch_template_options' ] );
-		$article_options  = $this->safe_id_options( 'articles', [ $this, 'fetch_sale_article_options' ] );
+		$series_options    = $this->safe_id_options( 'series', [ $this, 'fetch_invoice_series_options' ] );
+		$template_options  = $this->safe_id_options( 'templates', [ $this, 'fetch_template_options' ] );
+		$article_options   = $this->safe_id_options( 'articles', [ $this, 'fetch_sale_article_options' ] );
+		$dimension_options = $this->safe_id_options( 'dimensions', [ $this, 'fetch_dimension_options' ] );
 
 		$this->form_fields = [
 			'api_section'                              => [
@@ -188,10 +189,11 @@ class EFinancialsIntegration extends \WC_Integration {
 				'default'     => '',
 			],
 			self::SETTING_KEY_DEFAULT_ACCOUNTS_DIMENSIONS_ID => [
-				'title'       => __( 'Default accounts dimension id', 'arbictus-sync-for-e-financials-woocommerce' ),
-				'type'        => 'number',
+				'title'       => __( 'Default accounts dimension', 'arbictus-sync-for-e-financials-woocommerce' ),
+				'type'        => 'select',
 				'description' => __( 'Used for Option B (transactions) when the gateway map does not override.', 'arbictus-sync-for-e-financials-woocommerce' ),
 				'default'     => '',
+				'options'     => $dimension_options,
 			],
 			self::SETTING_KEY_GATEWAY_MAP              => [
 				'title'       => __( 'Per-gateway payment map (JSON)', 'arbictus-sync-for-e-financials-woocommerce' ),
@@ -243,7 +245,7 @@ class EFinancialsIntegration extends \WC_Integration {
 	 */
 	private function flush_option_cache(): void {
 
-		foreach ( [ 'series', 'templates', 'articles' ] as $bucket ) {
+		foreach ( [ 'series', 'templates', 'articles', 'dimensions' ] as $bucket ) {
 			\delete_transient( self::OPTIONS_TRANSIENT_PREFIX . $bucket );
 		}
 
@@ -439,6 +441,34 @@ class EFinancialsIntegration extends \WC_Integration {
 
 			$label                            = $article->nameEng !== '' ? $article->nameEng : $article->nameEst;
 			$options[ (string) $article->id ] = $label !== '' ? $label : (string) $article->id;
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Fetch remote account dimension options for bank/transaction accounts.
+	 *
+	 * @return array<int|string, string>
+	 */
+	private function fetch_dimension_options(): array {
+
+		$client  = $this->make_client_from_posted_or_saved();
+		$list    = $client->accountDimensions()->all();
+		$options = [];
+
+		foreach ( $list->data as $dimension ) {
+			if ( $dimension->id === null || $dimension->isDeleted === true ) {
+				continue;
+			}
+
+			$label = $dimension->titleEst !== '' ? $dimension->titleEst : ( $dimension->titleEng ?? '' );
+			$options[ (string) $dimension->id ] = sprintf(
+				'%s (Konto %d, ID: %d)',
+				$label !== '' ? $label : (string) $dimension->id,
+				$dimension->accountsId,
+				$dimension->id
+			);
 		}
 
 		return $options;
