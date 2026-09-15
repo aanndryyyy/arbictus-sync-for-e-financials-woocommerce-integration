@@ -84,10 +84,11 @@ class EFinancialsIntegration extends \WC_Integration {
 	 */
 	public function init_form_fields(): void {
 
-		$series_options    = $this->safe_id_options( 'series', [ $this, 'fetch_invoice_series_options' ] );
-		$template_options  = $this->safe_id_options( 'templates', [ $this, 'fetch_template_options' ] );
-		$article_options   = $this->safe_id_options( 'articles', [ $this, 'fetch_sale_article_options' ] );
-		$dimension_options = $this->safe_id_options( 'dimensions', [ $this, 'fetch_dimension_options' ] );
+		$series_options       = $this->safe_id_options( 'series', [ $this, 'fetch_invoice_series_options' ] );
+		$template_options     = $this->safe_id_options( 'templates', [ $this, 'fetch_template_options' ] );
+		$article_options      = $this->safe_id_options( 'articles', [ $this, 'fetch_sale_article_options' ] );
+		$dimension_options    = $this->safe_id_options( 'dimensions', [ $this, 'fetch_dimension_options' ] );
+		$cash_account_options = $this->safe_id_options( 'cash_accounts', [ $this, 'fetch_cash_account_options' ] );
 
 		$this->form_fields = [
 			'api_section'                              => [
@@ -183,10 +184,11 @@ class EFinancialsIntegration extends \WC_Integration {
 				],
 			],
 			self::SETTING_KEY_DEFAULT_CASH_ACCOUNTS_ID => [
-				'title'       => __( 'Default cash account id', 'arbictus-sync-for-e-financials-woocommerce' ),
-				'type'        => 'number',
+				'title'       => __( 'Default cash account', 'arbictus-sync-for-e-financials-woocommerce' ),
+				'type'        => 'select',
 				'description' => __( 'Used for Option A (paid_in_cash) when the gateway map does not override.', 'arbictus-sync-for-e-financials-woocommerce' ),
 				'default'     => '',
+				'options'     => $cash_account_options,
 			],
 			self::SETTING_KEY_DEFAULT_ACCOUNTS_DIMENSIONS_ID => [
 				'title'       => __( 'Default accounts dimension', 'arbictus-sync-for-e-financials-woocommerce' ),
@@ -245,7 +247,7 @@ class EFinancialsIntegration extends \WC_Integration {
 	 */
 	private function flush_option_cache(): void {
 
-		foreach ( [ 'series', 'templates', 'articles', 'dimensions' ] as $bucket ) {
+		foreach ( [ 'series', 'templates', 'articles', 'dimensions', 'cash_accounts' ] as $bucket ) {
 			\delete_transient( self::OPTIONS_TRANSIENT_PREFIX . $bucket );
 		}
 
@@ -469,6 +471,48 @@ class EFinancialsIntegration extends \WC_Integration {
 				$dimension->accountsId,
 				$dimension->id
 			);
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Fetch remote cash account options for cash payments.
+	 *
+	 * @return array<int|string, string>
+	 */
+	private function fetch_cash_account_options(): array {
+
+		$client  = $this->make_client_from_posted_or_saved();
+		$list    = $client->accounts()->all();
+		$options = [];
+
+		foreach ( $list->data as $account ) {
+			if ( $account->id === null || $account->isValid === false || $account->isDisabled === true ) {
+				continue;
+			}
+
+			$name    = $account->nameEst !== '' ? $account->nameEst : $account->nameEng;
+			$is_cash = ( $account->id >= 1000 && $account->id < 1100 )
+				|| \str_contains( \strtolower( $name ), 'kassa' )
+				|| \str_contains( \strtolower( $name ), 'cash' );
+
+			if ( ! $is_cash ) {
+				continue;
+			}
+
+			$options[ (string) $account->id ] = sprintf( '%d - %s', $account->id, $name );
+		}
+
+		if ( $options === [] ) {
+			foreach ( $list->data as $account ) {
+				if ( $account->id === null || $account->isValid === false || $account->isDisabled === true ) {
+					continue;
+				}
+
+				$name                             = $account->nameEst !== '' ? $account->nameEst : $account->nameEng;
+				$options[ (string) $account->id ] = sprintf( '%d - %s', $account->id, $name );
+			}
 		}
 
 		return $options;
