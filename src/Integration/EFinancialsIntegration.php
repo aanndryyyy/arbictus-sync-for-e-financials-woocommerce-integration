@@ -134,6 +134,7 @@ class EFinancialsIntegration extends \WC_Integration {
 				'type'        => 'select',
 				'description' => __( 'Number prefix of the selected series is sent as number_prefix on every sale invoice. Leave empty to let e-Financials number invoices itself.', 'arbictus-sync-for-e-financials-woocommerce' ),
 				'default'     => '',
+				'class'       => 'wc-enhanced-select',
 				'options'     => $series_options,
 			],
 			self::SETTING_KEY_TEMPLATE_ID              => [
@@ -141,6 +142,7 @@ class EFinancialsIntegration extends \WC_Integration {
 				'type'        => 'select',
 				'description' => __( 'Sale invoice template (cl_templates_id). Required before first sync.', 'arbictus-sync-for-e-financials-woocommerce' ),
 				'default'     => '',
+				'class'       => 'wc-enhanced-select',
 				'options'     => $template_options,
 			],
 			self::SETTING_KEY_SALE_ARTICLE_ID          => [
@@ -148,6 +150,7 @@ class EFinancialsIntegration extends \WC_Integration {
 				'type'        => 'select',
 				'description' => __( 'Required: e-Financials refuses to create products without a sale account, and books VAT by article. Its VAT rate must match the rate your shop charges.', 'arbictus-sync-for-e-financials-woocommerce' ),
 				'default'     => '',
+				'class'       => 'wc-enhanced-select',
 				'options'     => $article_options,
 			],
 			self::SETTING_KEY_SALE_ARTICLE_MAP         => [
@@ -188,6 +191,7 @@ class EFinancialsIntegration extends \WC_Integration {
 				'type'        => 'select',
 				'description' => __( 'Used for Option A (paid_in_cash) when the gateway map does not override.', 'arbictus-sync-for-e-financials-woocommerce' ),
 				'default'     => '',
+				'class'       => 'wc-enhanced-select',
 				'options'     => $cash_account_options,
 			],
 			self::SETTING_KEY_DEFAULT_ACCOUNTS_DIMENSIONS_ID => [
@@ -195,6 +199,7 @@ class EFinancialsIntegration extends \WC_Integration {
 				'type'        => 'select',
 				'description' => __( 'Used for Option B (transactions) when the gateway map does not override.', 'arbictus-sync-for-e-financials-woocommerce' ),
 				'default'     => '',
+				'class'       => 'wc-enhanced-select',
 				'options'     => $dimension_options,
 			],
 			self::SETTING_KEY_GATEWAY_MAP              => [
