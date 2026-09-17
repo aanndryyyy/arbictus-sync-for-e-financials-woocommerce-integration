@@ -18,7 +18,7 @@ sponsored by Registrite ja Infosüsteemide Keskus (RIK), the operator of e-Finan
 e-Arveldaja, nor by Automattic, the owner of the WooCommerce trademark. "e-Financials",
 "e-Arveldaja" and "WooCommerce" are used here only to describe what this plugin connects to.
 
-Background sync so checkout stays fast. Once an order reaches a configured status the plugin:
+Background sync so checkout stays fast. Once an order is paid (or marked completed) the plugin:
 
 1. Upserts the customer as an e-Financials client.
 2. Ensures every ordered product exists as an e-Financials product.

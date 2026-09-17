@@ -2,9 +2,16 @@
 
 WooCommerce → [e-Arveldaja / e-Financials](https://e-arveldaja.rik.ee/) bookkeeping sync.
 
-**Workflow map** (Accountants.Contact + Merit Aktiva hooks → OpenAPI → `e-financials/php-client`): see [`docs/accounting-workflow.md`](docs/accounting-workflow.md).
+**Workflow map** (WooCommerce hooks → e-Financials OpenAPI → `aanndryyyy/e-financials-php-client`): see [`docs/accounting-workflow.md`](docs/accounting-workflow.md).
 
-API traffic goes through [`e-financials/php-client`](https://github.com/aanndryyyy/e-financials-php-client) (`composer require e-financials/php-client` once published on Packagist; until then Composer uses the GitHub VCS repository).
+API traffic goes through [`aanndryyyy/e-financials-php-client`](https://github.com/aanndryyyy/e-financials-php-client), installed from Packagist (`^0.1`).
+
+## Requirements
+
+- PHP 8.2+
+- WordPress 6.5+ (tested up to 7.0)
+- WooCommerce 8.2+ (tested up to 11.0), with or without High-Performance Order Storage
+- e-Financials API credentials (live or demo environment)
 
 ## What this plugin does
 
@@ -18,7 +25,25 @@ Background (Action Scheduler / WP-Cron) sync so checkout stays fast:
 6. **Credit invoices** on full/partial refunds
 7. **Admin UX** — settings, order column, metabox PDF, order actions, email note
 
-Configure under **WooCommerce → Settings → Integrations → e-Financials** (credentials, invoice series, template, payment mode map, deliver toggles).
+Configure under **WooCommerce → Settings → Integrations → e-Financials**:
+
+- **API connection** — key id, public key, password, and the live or test (demo) environment.
+- **Invoicing** — invoice series, template, default sale article (required), VAT rate → sale
+  article map, payment term, and whether the WooCommerce order number becomes the invoice suffix.
+- **Payment recording** — default payment mode, default cash account and accounts dimension,
+  and a per-gateway payment map. The series, template, sale article, cash account and dimension
+  fields are dropdowns loaded from the e-Financials API once credentials are saved, so nobody has
+  to look up internal ids (or mistake a ledger account number for one).
+- **Delivery & products** — auto-deliver the invoice email, also send an e-invoice, and
+  auto-sync products on save.
+
+### What triggers a sync
+
+An order is queued when WooCommerce fires `woocommerce_payment_complete`, with the order moving
+to **Completed** as a fallback for gateways that never report payment. Neither trigger is
+configurable. Nothing is queued until API credentials are set, and an order that already has a
+sale invoice is skipped. Full and partial refunds queue a credit invoice. Sync and deliver can
+also be run by hand from the order actions.
 
 ## Sequences
 
@@ -87,6 +112,33 @@ govern it, all verified end-to-end against the demo tenant (2026-08-03):
 Over-crediting is refused per row with a 409, and voiding a credit does not give the
 capacity back. API error text is sanitised and truncated before it reaches an order note,
 so the raw server traceback is never shown to customers.
+
+## Development
+
+The repository ships a devcontainer (PHP 8.2) — run PHP and Composer commands inside it.
+The local WordPress runs on [`wp-env`](https://www.npmjs.com/package/@wordpress/env), which
+needs Docker.
+
+```bash
+composer install        # the plugin loads vendor/autoload.php, so this is required
+npm install
+npm start               # wp-env: http://localhost:8888 (admin / password)
+npm run import:demo     # optional WooCommerce sample products
+```
+
+Tests and static analysis:
+
+```bash
+composer test           # unit tests + PHPCS, PHPStan and Psalm
+composer test:unit      # PHPUnit only (tests/unit)
+composer test:static    # PHPCS, PHPStan, Psalm
+npm run test:e2e        # Playwright against wp-env (excludes @live)
+npm run test:e2e:live   # real calls to the e-Financials demo API; needs credentials
+```
+
+PHPStan and Psalm live in `vendor-bin/` via `bamarni/composer-bin-plugin`. See
+[`tests/e2e/README.md`](tests/e2e/README.md) for the e2e conventions and the environment
+variables the live suite reads.
 
 ## Demo in WordPress Playground
 

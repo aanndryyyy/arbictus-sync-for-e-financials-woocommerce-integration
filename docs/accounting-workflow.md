@@ -1,61 +1,14 @@
 # Accounting workflow map
 
-Reference comparison of **Accountants.Contact Sync for WooCommerce** and **Orders Synchronization for Merit Aktiva**, mapped onto the [e-Financials OpenAPI](https://rmp-api.rik.ee/openapi.yaml) and the [`e-financials/php-client`](https://github.com/aanndryyyy/e-financials-php-client) package.
+How the plugin's WooCommerce accounting workflow maps onto the [e-Financials OpenAPI](https://rmp-api.rik.ee/openapi.yaml) and the [`aanndryyyy/e-financials-php-client`](https://github.com/aanndryyyy/e-financials-php-client) package.
 
 Goal for this plugin: keep checkout/admin responses immediate; push bookkeeping work to the background (see root README sequence).
 
 ---
 
-## 1. WooCommerce hook map (reference plugins)
+## 1. Accounting workflow
 
-### Accountants.Contact Sync
-
-Event-driven, HPOS-aware, ~1.1k LOC. Sync runs in the request that fires the WC hook (no Action Scheduler / cron).
-
-| Concern | Hook / entry | Behaviour |
-| --- | --- | --- |
-| Boot / HPOS | `before_woocommerce_init` | `FeaturesUtil::declare_compatibility( 'custom_order_tables', … )` |
-| Boot | `plugins_loaded` | Load settings, client, order sync, products, admin if WC active |
-| **Order → invoice** | `woocommerce_payment_complete` | Primary: gateway confirms payment → build payload → API create invoice |
-| **Order → invoice (fallback)** | `woocommerce_order_status_completed` | Safety net when payment never fired `payment_complete` |
-| Idempotency | order meta `_acwc_invoice_id` | Skip if already linked; server also dedupes on `external_ref` (`WC-{id}`) |
-| Manual resend | `woocommerce_order_actions` + `woocommerce_order_action_acwc_send` | Order-edit action “Send to Accountants.Contact” |
-| Orders list UI | `manage_edit-shop_order_columns` / `manage_woocommerce_page_wc-orders_columns` (+ render) | Invoice number column (legacy + HPOS) |
-| Settings | `woocommerce_settings_tabs_array` + `woocommerce_settings_{tab}` / `_save_` | WC Settings tab; connection ping on save |
-| **Product export** | `woocommerce_new_product` / `woocommerce_update_product` | Opt-in auto-export on save |
-| Product bulk | `admin_post_acwc_export_all` / `admin_post_acwc_import_all` | Settings-page bulk import/export |
-| Plugins row | `plugin_action_links_*` | Settings shortcut |
-
-**Order payload shape (conceptual):** customer (name/email/phone/address) + tax-inclusive lines (products, shipping, fees) + optional payment block (bank code, amount, date) + `external_ref`.
-
-**Product payload:** SKU → code, name, description, sell price (cents), tax/income codes; store `_acwc_item_id`.
-
-### Merit Aktiva Sync
-
-Cron + status-driven, Estonian-market features, larger surface.
-
-| Concern | Hook / entry | Behaviour |
-| --- | --- | --- |
-| Schedule | `cron_schedules` + `init` / activator | Custom `every_5_minutes` → `merit_aktiva_auto_sync` |
-| **Order → invoice** | `woocommerce_order_status_changed` | If `$new_status ===` configured status → `create_invoice()` |
-| **Refund → credit** | same hook | If `$new_status === 'refunded'` → `create_credit_invoice()` |
-| Cron safety net | `merit_aktiva_auto_sync` | All orders in configured status without `_merit_invoice_sent_at`; backoff after 3 full failures |
-| Manual single | `wp_ajax_sync_invoice` / `merit_force_resend` | Metabox / AJAX |
-| Manual bulk | `wp_ajax_merit_sync_all_orders` | Settings “sync all” |
-| PDF | `wp_ajax_merit_download_pdf` | Fetch Merit PDF onto order screen |
-| Orders UI | HPOS + legacy column/filter/bulk hooks | Merit sent badge, filter, bulk send |
-| Checkout B2B | `woocommerce_init` → `woocommerce_register_additional_checkout_field` | Company / registry code / VAT |
-| Admin order | `woocommerce_admin_order_data_after_billing_address` | Show B2B fields |
-| Email note | `woocommerce_email_after_order_table` | Mention Merit invoice |
-| Settings | custom admin menu + AJAX test/reconcile/import-export | Not a WC Integrations tab |
-
-**Idempotency:** `_merit_invoice_sent_at` order meta (+ order note). Cron skips when present.
-
----
-
-## 2. Shared accounting workflow (canonical steps)
-
-Both plugins implement the same core loop. Ours should follow this shape, with **async execution** (Action Scheduler / WC queue) so the storefront stays fast.
+The core loop runs with **async execution** (Action Scheduler / WC queue) so the storefront stays fast.
 
 ```mermaid
 sequenceDiagram
@@ -97,29 +50,29 @@ sequenceDiagram
 	end
 ```
 
-| Step | Accountants.Contact | Merit Aktiva | e-Financials target |
-| --- | --- | --- | --- |
-| 0. Series / template | — | — | **invoice_series** + template in settings (P0 setup) |
-| 1. Trigger | `payment_complete` / `completed` | Configurable status + 5‑min cron | ACWC triggers + Merit-style queue/cron retry |
-| 2. Guard | meta `_acwc_invoice_id` + `external_ref` | meta `_merit_invoice_sent_at` | `_ef_sale_invoice_id`, `_ef_clients_id`; refuse duplicates |
-| 3. Customer | Embedded in invoice payload | Built into Merit invoice body | Explicit **clients** upsert first |
-| 4. Products | Optional item sync by SKU | Line codes on invoice | **products** ensure; rows require `products_id` |
-| 5. Invoice | Single “create invoice” API | `sendinvoice` | **sale_invoices** create (+ `items[]`) then **register** |
-| 6. Payment | Optional “record as paid” | Payment method → Merit payment code | **Cash fields** and/or **transactions** (see §3.5) |
-| 7. Credit / refund | — | Full refund → credit invoice | Credit sale invoice (`credit_sale_invoices_id`) — **in scope** |
-| 8. PDF / deliver | — | Download Merit PDF | `getSystemPdf` + `deliver` — **in scope** |
-| 9. Admin UX | Settings tab, orders column, order action | Metabox, column, bulk, dashboard | Mirror ACWC minimal UX + PDF/resend actions |
+| Step | e-Financials |
+| --- | --- |
+| 0. Series / template | **invoice_series** + template in settings (P0 setup) |
+| 1. Trigger | `payment_complete` / `completed` hooks + queue retry |
+| 2. Guard | `_ef_sale_invoice_id`, `_ef_clients_id`; refuse duplicates |
+| 3. Customer | Explicit **clients** upsert first |
+| 4. Products | **products** ensure; rows require `products_id` |
+| 5. Invoice | **sale_invoices** create (+ `items[]`) then **register** |
+| 6. Payment | **Cash fields** and/or **transactions** (see §2.5) |
+| 7. Credit / refund | Credit sale invoice (`credit_sale_invoices_id`) |
+| 8. PDF / deliver | `getSystemPdf` + `deliver` |
+| 9. Admin UX | Settings, orders column, metabox, PDF / resend / deliver actions |
 
 ---
 
-## 3. OpenAPI → php-client → WooCommerce data flow
+## 2. OpenAPI → php-client → WooCommerce data flow
 
-Package: **`e-financials/php-client`** (`EFinancials::client()` / `EFinancials::factory()`).  
+Package: **`aanndryyyy/e-financials-php-client`** (`EFinancials::client()` / `EFinancials::factory()`).  
 Bases: live `https://rmp-api.rik.ee/v1`, demo `https://demo-rmp-api.rik.ee/v1` (factory default).
 
 Auth (handled by client): `X-AUTH-QUERYTIME` + `X-AUTH-KEY` HMAC-SHA-384 over `{apiKeyId}:{queryTime}:{path}`.
 
-### 3.1 Connection / settings
+### 2.1 Connection / settings
 
 | WC side | Client accessor | OpenAPI |
 | --- | --- | --- |
@@ -130,21 +83,21 @@ Auth (handled by client): `X-AUTH-QUERYTIME` + `X-AUTH-KEY` HMAC-SHA-384 over `{
 
 Existing plugin settings keys already align: `api_key_id`, `api_key_public`, `api_key_password`, `api_key_environment` (test|live).
 
-### 3.2 Client (buyer) upsert — New Order step 1
+### 2.2 Client (buyer) upsert — New Order step 1
 
 | WC source | Map to `Clients` body | Client API | OpenAPI |
 | --- | --- | --- | --- |
 | Billing name / company | `name`, `is_juridical_entity` / `is_physical_entity` | `$client->clients()->create()` / `update($id)` | `POST /clients`, `PATCH /clients/{id}` |
 | Billing email / phone | `email`, `telephone` | | |
 | Billing address | `address_text`, `postal_address_text`, `cl_invoice_country` | | |
-| Company registry code (future checkout field, cf. Merit) | `code` | | |
+| Company registry code (future checkout field) | `code` | | |
 | VAT number | `invoice_vat_no` | | |
 | Always for shop buyers | `is_client=true`, `is_supplier=false`, `cl_code_country`, `is_member`, `send_invoice_to_email`, `send_invoice_to_accounting_email` | required by client SDK | |
 | Match existing | Search `clients()->all(page, modifiedSince)` by email/`code`; store `_ef_clients_id` on order/customer | `GET /clients` | |
 
 **Required create fields (SDK):** `is_client`, `is_supplier`, `name`, `cl_code_country`, `is_member`, `send_invoice_to_email`, `send_invoice_to_accounting_email`.
 
-### 3.3 Product sync (optional) — catalogue
+### 2.3 Product sync (optional) — catalogue
 
 | WC source | Map to `Products` | Client API | OpenAPI |
 | --- | --- | --- | --- |
@@ -156,13 +109,13 @@ Existing plugin settings keys already align: `api_key_id`, `api_key_public`, `ap
 | Link | product meta `_ef_products_id` | `get` / `update` / `deactivate` | `GET|PATCH /products/{id}`, deactivate/reactivate |
 | Import / reconcile | `products()->all($page, $modifiedSince)` | | `GET /products?modified_since=` |
 
-Invoice rows **require** `products_id`. For orders whose lines lack a linked product, create/find a generic “WooCommerce line” / shipping / fee product first (same pattern Merit uses with coded articles).
+Invoice rows **require** `products_id`. For orders whose lines lack a linked product, create/find a generic “WooCommerce line” / shipping / fee product first.
 
-### 3.4 Sale invoice — New Order step 2
+### 2.4 Sale invoice — New Order step 2
 
 | WC source | Map to `SaleInvoices` / `SaleInvoicesItems` | Client API | OpenAPI |
 | --- | --- | --- | --- |
-| Resolved buyer | `clients_id` | from §3.2 | |
+| Resolved buyer | `clients_id` | from §2.2 | |
 | Order number | `number_suffix` (and/or notes / `contract_number`) | `$client->salesInvoices()->create($params)` | `POST /sale_invoices` |
 | Dates | `create_date`, `journal_date` from paid/created | | |
 | Currency | `cl_currencies_id` (e.g. `EUR`) | | |
@@ -181,9 +134,9 @@ Invoice rows **require** `products_id`. For orders whose lines lack a linked pro
 
 **Required row fields:** `products_id`, `amount`, `custom_title`.
 
-### 3.5 Payment recording — how to implement
+### 2.5 Payment recording — how to implement
 
-e-Financials exposes **two different payment models**. Pick per WC payment method via settings (Merit-style map).
+e-Financials exposes **two different payment models**. Pick per WC payment method via settings.
 
 #### Option A — Cash fields on the sale invoice (simplest)
 
@@ -205,7 +158,7 @@ Flow:
 2. `salesInvoices()->register($id)`.
 3. Persist `_ef_payment_mode = cash` (no separate transaction id).
 
-Pros: one API object, matches ACWC “record as paid”.  
+Pros: one API object.  
 Cons: not a proper bank receipt; weaker for bank-transfer / payout reconciliation.
 
 #### Option B — Incoming `transactions` settled against the invoice
@@ -320,9 +273,9 @@ elif mode == transaction:
     ?? settings.default_accounts_dimensions_id
 ```
 
-Nothing in `e-financials/php-client` or the OpenAPI talks to payment gateways — only to e-Financials using data already on the WC order.
+Nothing in `aanndryyyy/e-financials-php-client` or the OpenAPI talks to payment gateways — only to e-Financials using data already on the WC order.
 
-### 3.6 Credit on refund — in scope
+### 2.6 Credit on refund — in scope
 
 | WC source | e-Financials | Client API | OpenAPI |
 | --- | --- | --- | --- |
@@ -334,7 +287,7 @@ Nothing in `e-financials/php-client` or the OpenAPI talks to payment gateways �
 
 Guards: require `_ef_sale_invoice_id`; skip if credit already linked for that refund id (`_ef_refund_{refund_id}_credit_id`).
 
-### 3.7 PDF + customer delivery — in scope
+### 2.7 PDF + customer delivery — in scope
 
 | Feature | When | Client API | OpenAPI |
 | --- | --- | --- | --- |
@@ -343,11 +296,11 @@ Guards: require `_ef_sale_invoice_id`; skip if credit already linked for that re
 | Attach WC PDF (e.g. packing-slip plugin) | Setting: “upload shop PDF” | `updateFile($id, …)` | `PUT …/document_user` |
 | Email PDF to customer | Setting: auto after register, or order action | `getDeliveryOptions` → `deliver` with `send_email`, addresses, subject/body | `GET …/delivery_options`, `PATCH …/deliver` |
 | E-invoice (machine XML) | When `can_send_einvoice` | `deliver` with `send_einvoice=true` | same |
-| WC email note | `woocommerce_email_after_order_table` | Link/number from meta (Merit pattern) | — |
+| WC email note | `woocommerce_email_after_order_table` | Link/number from meta | — |
 
 Auto-deliver only after successful **register**; store `_ef_delivered_at` / last delivery error. Manual order action: “Deliver e-Financials invoice”.
 
-### 3.8 Invoice series — in scope (setup + sync)
+### 2.8 Invoice series — in scope (setup + sync)
 
 | Feature | Client API | OpenAPI | Plugin behaviour |
 | --- | --- | --- | --- |
@@ -360,9 +313,9 @@ Auto-deliver only after successful **register**; store `_ef_delivered_at` / last
 
 ---
 
-## 4. Recommended hook / job plan for this plugin
+## 3. Recommended hook / job plan for this plugin
 
-Adopt ACWC’s **simplicity** and Merit’s **reliability + Estonian extras**, but route all API I/O through **`e-financials/php-client`** on a background queue.
+Keep the admin surface minimal, retry reliably, and route all API I/O through **`aanndryyyy/e-financials-php-client`** on a background queue.
 
 | Priority | WC hook / entry | Job |
 | --- | --- | --- |
@@ -377,7 +330,7 @@ Adopt ACWC’s **simplicity** and Merit’s **reliability + Estonian extras**, b
 | P1 | `woocommerce_order_actions` | Manual send / resend / **deliver** / **fetch PDF** |
 | P1 | Orders list columns (legacy + HPOS) | Invoice number, payment mode, credit badge, error |
 | P1 | Admin order metabox | PDF download, delivery status, last error |
-| P2 | Checkout additional fields | Registry code + VAT (Merit-style) |
+| P2 | Checkout additional fields | Registry code + VAT |
 | P2 | `woocommerce_email_after_order_table` | Show e-Financials invoice number / PDF note |
 
 ### Suggested order meta
@@ -403,13 +356,13 @@ Adopt ACWC’s **simplicity** and Merit’s **reliability + Estonian extras**, b
 
 ---
 
-## 5. Client package dependency
+## 4. Client package dependency
 
 ```bash
-composer require e-financials/php-client guzzlehttp/guzzle
+composer require aanndryyyy/e-financials-php-client guzzlehttp/guzzle
 ```
 
-- Packagist name: `e-financials/php-client` (publishing pending; Composer `repositories` VCS entry points at GitHub until then).
+- Packagist name: `aanndryyyy/e-financials-php-client` (published; the plugin requires `^0.1`).
 - PHP **^8.2** (client constraint) — this plugin must match.
 - PSR-18 HTTP client required at runtime (Guzzle is the documented choice).
 
@@ -444,23 +397,7 @@ $client->salesInvoices()->deliver( $id, [
 
 ---
 
-## 6. Gap checklist vs reference plugins
-
-| Capability | ACWC | Merit | e-Financials plugin (planned) |
-| --- | --- | --- | --- |
-| Immediate UX / background work | sync in-request | cron + status | **queue** (README critical path) |
-| Client upsert | implicit | implicit | **explicit `clients` API** |
-| Product link required on lines | no | coded articles | **yes (`products_id`)** |
-| Idempotent order sync | yes | yes | yes |
-| Invoice series / template setup | — | — | **yes (P0 settings)** |
-| Payment recording | optional paid receipt | payment method map | **cash fields + transactions (P0)** |
-| Credit on refund | no | yes | **yes (P0)** |
-| PDF from accounting system | no | yes | **yes (P1 admin)** |
-| Deliver invoice to customer | no | email note only | **`deliver` auto + manual (P0/P1)** |
-| HPOS | yes | yes | yes |
-| Estonian reg code / VAT checkout | no | yes | P2 |
-
-### Option B values (resolved for implementation)
+## 5. Option B values (resolved for implementation)
 
 1. Incoming customer payment uses transaction `type = "D"` (Laekumine / money in). Outgoing uses `"C"`.
 2. Distributions onto a sale invoice use `related_table = "sale_invoices"` with `related_id` = sale invoice id.
