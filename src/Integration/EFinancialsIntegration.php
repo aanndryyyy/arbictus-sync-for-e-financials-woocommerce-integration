@@ -84,9 +84,11 @@ class EFinancialsIntegration extends \WC_Integration {
 	 */
 	public function init_form_fields(): void {
 
-		$series_options   = $this->safe_id_options( 'series', [ $this, 'fetch_invoice_series_options' ] );
-		$template_options = $this->safe_id_options( 'templates', [ $this, 'fetch_template_options' ] );
-		$article_options  = $this->safe_id_options( 'articles', [ $this, 'fetch_sale_article_options' ] );
+		$series_options       = $this->safe_id_options( 'series', self::SETTING_KEY_INVOICE_SERIES_ID, [ $this, 'fetch_invoice_series_options' ] );
+		$template_options     = $this->safe_id_options( 'templates', self::SETTING_KEY_TEMPLATE_ID, [ $this, 'fetch_template_options' ] );
+		$article_options      = $this->safe_id_options( 'articles', self::SETTING_KEY_SALE_ARTICLE_ID, [ $this, 'fetch_sale_article_options' ] );
+		$dimension_options    = $this->safe_id_options( 'dimensions', self::SETTING_KEY_DEFAULT_ACCOUNTS_DIMENSIONS_ID, [ $this, 'fetch_dimension_options' ] );
+		$cash_account_options = $this->safe_id_options( 'cash_accounts', self::SETTING_KEY_DEFAULT_CASH_ACCOUNTS_ID, [ $this, 'fetch_cash_account_options' ] );
 
 		$this->form_fields = [
 			'api_section'                              => [
@@ -132,6 +134,7 @@ class EFinancialsIntegration extends \WC_Integration {
 				'type'        => 'select',
 				'description' => __( 'Number prefix of the selected series is sent as number_prefix on every sale invoice. Leave empty to let e-Financials number invoices itself.', 'arbictus-sync-for-e-financials-woocommerce' ),
 				'default'     => '',
+				'class'       => 'wc-enhanced-select',
 				'options'     => $series_options,
 			],
 			self::SETTING_KEY_TEMPLATE_ID              => [
@@ -139,6 +142,7 @@ class EFinancialsIntegration extends \WC_Integration {
 				'type'        => 'select',
 				'description' => __( 'Sale invoice template (cl_templates_id). Required before first sync.', 'arbictus-sync-for-e-financials-woocommerce' ),
 				'default'     => '',
+				'class'       => 'wc-enhanced-select',
 				'options'     => $template_options,
 			],
 			self::SETTING_KEY_SALE_ARTICLE_ID          => [
@@ -146,6 +150,7 @@ class EFinancialsIntegration extends \WC_Integration {
 				'type'        => 'select',
 				'description' => __( 'Required: e-Financials refuses to create products without a sale account, and books VAT by article. Its VAT rate must match the rate your shop charges.', 'arbictus-sync-for-e-financials-woocommerce' ),
 				'default'     => '',
+				'class'       => 'wc-enhanced-select',
 				'options'     => $article_options,
 			],
 			self::SETTING_KEY_SALE_ARTICLE_MAP         => [
@@ -182,16 +187,20 @@ class EFinancialsIntegration extends \WC_Integration {
 				],
 			],
 			self::SETTING_KEY_DEFAULT_CASH_ACCOUNTS_ID => [
-				'title'       => __( 'Default cash account id', 'arbictus-sync-for-e-financials-woocommerce' ),
-				'type'        => 'number',
+				'title'       => __( 'Default cash account', 'arbictus-sync-for-e-financials-woocommerce' ),
+				'type'        => 'select',
 				'description' => __( 'Used for Option A (paid_in_cash) when the gateway map does not override.', 'arbictus-sync-for-e-financials-woocommerce' ),
 				'default'     => '',
+				'class'       => 'wc-enhanced-select',
+				'options'     => $cash_account_options,
 			],
 			self::SETTING_KEY_DEFAULT_ACCOUNTS_DIMENSIONS_ID => [
-				'title'       => __( 'Default accounts dimension id', 'arbictus-sync-for-e-financials-woocommerce' ),
-				'type'        => 'number',
+				'title'       => __( 'Default accounts dimension', 'arbictus-sync-for-e-financials-woocommerce' ),
+				'type'        => 'select',
 				'description' => __( 'Used for Option B (transactions) when the gateway map does not override.', 'arbictus-sync-for-e-financials-woocommerce' ),
 				'default'     => '',
+				'class'       => 'wc-enhanced-select',
+				'options'     => $dimension_options,
 			],
 			self::SETTING_KEY_GATEWAY_MAP              => [
 				'title'       => __( 'Per-gateway payment map (JSON)', 'arbictus-sync-for-e-financials-woocommerce' ),
@@ -243,7 +252,7 @@ class EFinancialsIntegration extends \WC_Integration {
 	 */
 	private function flush_option_cache(): void {
 
-		foreach ( [ 'series', 'templates', 'articles' ] as $bucket ) {
+		foreach ( [ 'series', 'templates', 'articles', 'dimensions', 'cash_accounts' ] as $bucket ) {
 			\delete_transient( self::OPTIONS_TRANSIENT_PREFIX . $bucket );
 		}
 
@@ -336,12 +345,16 @@ class EFinancialsIntegration extends \WC_Integration {
 	/**
 	 * Provide arguments.
 	 *
-	 * @param string                                $bucket   Cache bucket name.
-	 * @param callable(): array<int|string, string> $callback Options loader.
+	 * Whatever the remote list holds, the saved value stays selectable, so a
+	 * save never overwrites an id the dropdown could not show.
 	 *
-	 * @return array<int|string, string>
+	 * @param string                                                          $bucket      Cache bucket name.
+	 * @param string                                                          $setting_key Setting the dropdown stores.
+	 * @param callable(): array<int|string, string|array<int|string, string>> $callback    Options loader.
+	 *
+	 * @return array<int|string, string|array<int|string, string>>
 	 */
-	private function safe_id_options( string $bucket, callable $callback ): array {
+	private function safe_id_options( string $bucket, string $setting_key, callable $callback ): array {
 
 		$blank = [ '' => __( '— Select —', 'arbictus-sync-for-e-financials-woocommerce' ) ];
 
@@ -349,15 +362,16 @@ class EFinancialsIntegration extends \WC_Integration {
 			return $blank;
 		}
 
+		$saved  = (string) $this->get_option( $setting_key, '' );
 		$cached = \get_transient( self::OPTIONS_TRANSIENT_PREFIX . $bucket );
 
 		if ( \is_array( $cached ) ) {
 			/**
 			 * Cached option list.
 			 *
-			 * @var array<int|string, string> $cached
+			 * @var array<int|string, string|array<int|string, string>> $cached
 			 */
-			return $blank + $cached;
+			return RemoteSelectOptions::with_saved( $blank + $cached, $saved );
 		}
 
 		try {
@@ -370,12 +384,15 @@ class EFinancialsIntegration extends \WC_Integration {
 			// Replaces the blank entry rather than joining it: both would use the
 			// '' key, and an array union keeps the left-hand one, so the merchant
 			// would be left staring at an empty dropdown with no explanation.
-			return [ '' => __( 'Could not load options — check credentials and the WooCommerce logs', 'arbictus-sync-for-e-financials-woocommerce' ) ];
+			return RemoteSelectOptions::with_saved(
+				[ '' => __( 'Could not load options — check credentials and the WooCommerce logs', 'arbictus-sync-for-e-financials-woocommerce' ) ],
+				$saved
+			);
 		}
 
 		\set_transient( self::OPTIONS_TRANSIENT_PREFIX . $bucket, $options, self::OPTIONS_TRANSIENT_TTL );
 
-		return $blank + $options;
+		return RemoteSelectOptions::with_saved( $blank + $options, $saved );
 	}
 
 	/**
@@ -442,6 +459,28 @@ class EFinancialsIntegration extends \WC_Integration {
 		}
 
 		return $options;
+	}
+
+	/**
+	 * Fetch account dimension options for transactions.
+	 *
+	 * @return array<int|string, string|array<int|string, string>>
+	 */
+	private function fetch_dimension_options(): array {
+
+		$client = $this->make_client_from_posted_or_saved();
+
+		return RemoteSelectOptions::dimensions( $client->accountDimensions()->all()->data, $client->accounts()->all()->data );
+	}
+
+	/**
+	 * Fetch account options for paid_in_cash.
+	 *
+	 * @return array<int|string, string|array<int|string, string>>
+	 */
+	private function fetch_cash_account_options(): array {
+
+		return RemoteSelectOptions::cash_accounts( $this->make_client_from_posted_or_saved()->accounts()->all()->data );
 	}
 
 	/**
