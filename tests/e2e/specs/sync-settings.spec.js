@@ -108,6 +108,17 @@ test.describe( 'e-Financials sync settings', () => {
 	} );
 
 	test( 'delivery and product sync toggles save', async ( { page } ) => {
+		// Start from both toggles off: if an earlier run left them on, check()
+		// changes nothing and WooCommerce keeps "Save changes" disabled.
+		wpEval( `
+$settings = get_option( '${ SETTINGS_OPTION }' );
+$settings = is_array( $settings ) ? $settings : array();
+$settings['auto_deliver']      = 'no';
+$settings['product_auto_sync'] = 'no';
+update_option( '${ SETTINGS_OPTION }', $settings );
+echo 'ok';
+` );
+
 		await openEFinancialsSettings( page );
 
 		await page.locator( '#woocommerce_efinancials_integration_api_key_id' ).fill( '' );
