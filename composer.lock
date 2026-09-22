@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "56399572bc47a1844afa2255ebc8f897",
+    "content-hash": "2ffae4a98ad16c60d7f76a33ee948279",
     "packages": [
         {
             "name": "aanndryyyy/e-financials-php-client",
-            "version": "v0.1.0",
+            "version": "v0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aanndryyyy/e-financials-php-client.git",
-                "reference": "1bc8804bd95eb1aef24a38a66c8841406004f13d"
+                "reference": "34c743f6d26da2532087f36a0732a2a1337b8c7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aanndryyyy/e-financials-php-client/zipball/1bc8804bd95eb1aef24a38a66c8841406004f13d",
-                "reference": "1bc8804bd95eb1aef24a38a66c8841406004f13d",
+                "url": "https://api.github.com/repos/aanndryyyy/e-financials-php-client/zipball/34c743f6d26da2532087f36a0732a2a1337b8c7e",
+                "reference": "34c743f6d26da2532087f36a0732a2a1337b8c7e",
                 "shasum": ""
             },
             "require": {
@@ -43,6 +43,10 @@
                 "phpstan/phpstan-deprecation-rules": "^2.0.5",
                 "phpstan/phpstan-strict-rules": "^2.0.12",
                 "symfony/var-dumper": "^8.1.2"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "A PSR-18 client and PSR-17 factory implementation, auto-detected by php-http/discovery (^8.0)",
+                "nyholm/psr7": "A lightweight PSR-7/PSR-17 implementation; pair with symfony/http-client or another PSR-18 client"
             },
             "type": "library",
             "extra": {
@@ -75,24 +79,33 @@
                 {
                     "name": "Andry Pedak",
                     "email": "andry.pedak@arbictus.eu",
+                    "homepage": "https://pedak.me",
                     "role": "Developer"
                 }
             ],
             "description": "PHP client for the e-Arveldaja / e-Financials REST API",
+            "homepage": "https://github.com/aanndryyyy/e-financials-php-client",
             "keywords": [
+                "Accounting",
                 "api",
+                "bookkeeping",
                 "client",
                 "e-arveldaja",
                 "e-financials",
+                "estonia",
+                "invoicing",
                 "php",
+                "psr-18",
+                "rik",
                 "sdk"
             ],
             "support": {
+                "docs": "https://github.com/aanndryyyy/e-financials-php-client#readme",
                 "email": "andry.pedak@arbictus.eu",
                 "issues": "https://github.com/aanndryyyy/e-financials-php-client/issues",
                 "source": "https://github.com/aanndryyyy/e-financials-php-client"
             },
-            "time": "2026-08-06T09:30:23+00:00"
+            "time": "2026-08-06T10:12:40+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3099,16 +3112,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.13.5",
+            "version": "3.13.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHP_CodeSniffer.git",
-                "reference": "0ca86845ce43291e8f5692c7356fccf3bcf02bf4"
+                "reference": "4c378e1a528ea066890fc2397cbdd2f94eb2fc91"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/0ca86845ce43291e8f5692c7356fccf3bcf02bf4",
-                "reference": "0ca86845ce43291e8f5692c7356fccf3bcf02bf4",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHP_CodeSniffer/zipball/4c378e1a528ea066890fc2397cbdd2f94eb2fc91",
+                "reference": "4c378e1a528ea066890fc2397cbdd2f94eb2fc91",
                 "shasum": ""
             },
             "require": {
@@ -3174,7 +3187,7 @@
                     "type": "thanks_dev"
                 }
             ],
-            "time": "2025-11-04T16:30:35+00:00"
+            "time": "2026-08-06T00:17:32+00:00"
         },
         {
             "name": "staabm/side-effects-detector",
@@ -3354,5 +3367,5 @@
         "php": "^8.2"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.6.0"
 }
