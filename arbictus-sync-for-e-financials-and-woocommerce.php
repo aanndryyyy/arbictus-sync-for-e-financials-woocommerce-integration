@@ -16,11 +16,11 @@
  * Author URI: https://arbictus.eu
  *
  * Requires at least: 6.5
- * Tested up to: 7.0
+ * Tested up to: 7.1
  * Requires PHP: 8.2
  * Requires Plugins: woocommerce
  * WC requires at least: 8.2
- * WC tested up to: 11.0
+ * WC tested up to: 11.1
  *
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
