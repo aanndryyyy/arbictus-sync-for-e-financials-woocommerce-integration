@@ -21,7 +21,7 @@ permissions:
 env:
   # Must match the plugin's Text Domain — Plugin Check derives the slug from
   # the installed directory name.
-  PLUGIN_SLUG: arbictus-sync-for-e-financials-and-woocommerce
+  PLUGIN_SLUG: arbictus-sync-for-e-arveldaja
   BUILDS_BRANCH: playground-builds
 
 jobs:

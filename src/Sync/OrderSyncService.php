@@ -119,7 +119,7 @@ class OrderSyncService {
 				$order->add_order_note(
 					\sprintf(
 						/* translators: %s: error message */
-						__( 'e-Financials sync failed: %s', 'arbictus-sync-for-e-financials-and-woocommerce' ),
+						__( 'e-Financials sync failed: %s', 'arbictus-sync-for-e-arveldaja' ),
 						$message
 					)
 				);

@@ -90,7 +90,7 @@ class RegisterJobs implements ServiceInterface {
 
 		$schedules['ef_every_five_minutes'] = [
 			'interval' => 300,
-			'display'  => __( 'Every five minutes', 'arbictus-sync-for-e-financials-and-woocommerce' ),
+			'display'  => __( 'Every five minutes', 'arbictus-sync-for-e-arveldaja' ),
 		];
 
 		return $schedules;
@@ -149,7 +149,7 @@ class RegisterJobs implements ServiceInterface {
 				$order->add_order_note(
 					\sprintf(
 						/* translators: %s: error message */
-						__( 'e-Financials credit invoice failed: %s', 'arbictus-sync-for-e-financials-and-woocommerce' ),
+						__( 'e-Financials credit invoice failed: %s', 'arbictus-sync-for-e-arveldaja' ),
 						$message
 					)
 				);

@@ -142,7 +142,7 @@ class SaleInvoiceService {
 		$order->add_order_note(
 			\sprintf(
 				/* translators: 1: invoice id, 2: invoice number */
-				__( 'e-Financials sale invoice created (#%1$d%2$s).', 'arbictus-sync-for-e-financials-and-woocommerce' ),
+				__( 'e-Financials sale invoice created (#%1$d%2$s).', 'arbictus-sync-for-e-arveldaja' ),
 				$invoice_id,
 				$number !== '' ? ' / ' . $number : ''
 			)

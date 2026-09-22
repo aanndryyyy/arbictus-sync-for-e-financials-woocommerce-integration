@@ -37,7 +37,7 @@ class PluginLinks implements ServiceInterface {
 
 		$url = \admin_url( 'admin.php?page=wc-settings&tab=integration&section=efinancials_integration' );
 
-		$links['settings'] = '<a href="' . \esc_url( $url ) . '">' . \esc_html__( 'Settings', 'arbictus-sync-for-e-financials-and-woocommerce' ) . '</a>';
+		$links['settings'] = '<a href="' . \esc_url( $url ) . '">' . \esc_html__( 'Settings', 'arbictus-sync-for-e-arveldaja' ) . '</a>';
 
 		return $links;
 	}

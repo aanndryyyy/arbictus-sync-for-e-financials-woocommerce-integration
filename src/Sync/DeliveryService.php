@@ -108,7 +108,7 @@ class DeliveryService {
 		$order->update_meta_data( OrderMetaKeys::DELIVERED_AT, \gmdate( 'c' ) );
 		$order->save();
 
-		$order->add_order_note( __( 'e-Financials invoice delivered to customer.', 'arbictus-sync-for-e-financials-and-woocommerce' ) );
+		$order->add_order_note( __( 'e-Financials invoice delivered to customer.', 'arbictus-sync-for-e-arveldaja' ) );
 
 		$this->logger->info(
 			'Delivered sale invoice.',

@@ -1,4 +1,4 @@
-=== Arbictus Sync for e-Financials and WooCommerce ===
+=== Arbictus Sync for e-Arveldaja ===
 Contributors: aanndryyyy
 Tags: accounting, invoices, bookkeeping, e-arveldaja, estonia
 Requires at least: 6.5

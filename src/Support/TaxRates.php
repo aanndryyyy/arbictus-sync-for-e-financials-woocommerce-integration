@@ -40,7 +40,7 @@ final class TaxRates {
 					\esc_html(
 						\sprintf(
 							/* translators: %s: line item name */
-							__( 'Cannot resolve the VAT rate for line "%s": it carries tax but no WooCommerce tax rate.', 'arbictus-sync-for-e-financials-and-woocommerce' ),
+							__( 'Cannot resolve the VAT rate for line "%s": it carries tax but no WooCommerce tax rate.', 'arbictus-sync-for-e-arveldaja' ),
 							$item->get_name()
 						)
 					)
@@ -153,7 +153,7 @@ final class TaxRates {
 					\esc_html(
 						\sprintf(
 							/* translators: 1: tax rate id, 2: line item name */
-							__( 'WooCommerce tax rate #%1$d used by "%2$s" no longer exists; refusing to guess the VAT rate.', 'arbictus-sync-for-e-financials-and-woocommerce' ),
+							__( 'WooCommerce tax rate #%1$d used by "%2$s" no longer exists; refusing to guess the VAT rate.', 'arbictus-sync-for-e-arveldaja' ),
 							$rate_id,
 							$context
 						)

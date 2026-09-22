@@ -1,4 +1,4 @@
-# Arbictus Sync for e-Financials and WooCommerce
+# Arbictus Sync for e-Arveldaja
 
 WooCommerce → [e-Arveldaja / e-Financials](https://e-arveldaja.rik.ee/) bookkeeping sync.
 
@@ -166,11 +166,11 @@ and order screens — not live syncing.
 
 ## Releasing to WordPress.org
 
-The plugin is published as **`arbictus-sync-for-e-financials-and-woocommerce`**. That slug is also the text
+The plugin is published as **`arbictus-sync-for-e-arveldaja`**. That slug is also the text
 domain and the main file name, and it must stay in sync with all three.
 
 ```bash
-composer build          # dist/arbictus-sync-for-e-financials-and-woocommerce.zip, built from .distignore
+composer build          # dist/arbictus-sync-for-e-arveldaja.zip, built from .distignore
 ```
 
 The script installs production-only dependencies, refuses to build when the plugin header
@@ -181,7 +181,7 @@ The script installs production-only dependencies, refuses to build when the plug
 ```bash
 npm start
 npx wp-env run cli wp plugin install <path-to-zip> --force
-npx wp-env run cli wp plugin check arbictus-sync-for-e-financials-and-woocommerce \
+npx wp-env run cli wp plugin check arbictus-sync-for-e-arveldaja \
   --categories=general,plugin_repo,security,performance,accessibility --include-experimental
 ```
 
@@ -218,13 +218,13 @@ versus commercial distinction. You may run it on any number of sites, modify it,
 redistribute it under the same terms, free of charge and forever.
 
 Releases are distributed free through the
-[WordPress.org plugin directory](https://wordpress.org/plugins/arbictus-sync-for-e-financials-and-woocommerce/),
+[WordPress.org plugin directory](https://wordpress.org/plugins/arbictus-sync-for-e-arveldaja/),
 so every install updates at no cost and there is no licence key or premium build. Paid
 subscriptions cover **support only** — a service, never permission to use the code, and
 never access to functionality. See **[COMMERCIAL.md](COMMERCIAL.md)**. When a subscription
 lapses the plugin keeps working and keeps updating; you simply stop receiving support.
 
-The "Arbictus" name and logo, and the product name "Arbictus Sync for e-Financials and WooCommerce", are
+The "Arbictus" name and logo, and the product name "Arbictus Sync for e-Arveldaja", are
 trademarks and are not licensed by the GPL. Forks are welcome under a different name.
 
 ## Disclaimer

@@ -209,7 +209,7 @@ class PaymentRecordingService {
 		$order->add_order_note(
 			\sprintf(
 				/* translators: %d: transaction id */
-				__( 'e-Financials payment transaction registered (#%d).', 'arbictus-sync-for-e-financials-and-woocommerce' ),
+				__( 'e-Financials payment transaction registered (#%d).', 'arbictus-sync-for-e-arveldaja' ),
 				$tx_id
 			)
 		);

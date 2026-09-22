@@ -39,7 +39,7 @@ final class ErrorMessage {
 		$message = \trim( \preg_replace( '/\s+/', ' ', $message ) ?? $message );
 
 		if ( $message === '' ) {
-			$message = __( 'Unknown e-Financials API error.', 'arbictus-sync-for-e-financials-and-woocommerce' );
+			$message = __( 'Unknown e-Financials API error.', 'arbictus-sync-for-e-arveldaja' );
 		}
 
 		if ( \mb_strlen( $message ) > self::MAX_LENGTH ) {
