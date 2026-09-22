@@ -5,7 +5,7 @@ Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.2
 Requires Plugins: woocommerce
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,12 @@ CRUD API, so it works with both the legacy post storage and HPOS.
 3. The order metabox showing invoice status and the invoice PDF download.
 
 == Changelog ==
+
+= 1.0.1 =
+* The accounts dimension and cash account settings are now dropdowns loaded from e-Financials instead of raw ID fields.
+* Every active account is offered for the cash account, with cash and bank accounts grouped first; dimensions are grouped by their account.
+* All dropdowns loaded from e-Financials are searchable by account number, name and IBAN.
+* Fix: saving settings while e-Financials was unreachable, or with a saved ID missing from the fetched list, cleared that ID and could silently switch off payment recording.
 
 = 1.0.0 =
 * Initial release.
