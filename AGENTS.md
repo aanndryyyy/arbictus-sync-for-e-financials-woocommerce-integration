@@ -9,7 +9,6 @@ WooCommerce plugin that syncs orders/products/invoices with e-Financials (e-Arve
 - PHP plugin (`composer install` required — entrypoint loads `vendor/autoload.php`)
 - Local WordPress via `@wordpress/env` (Docker): `npm start`
 - Default site: http://localhost:8888 — WP admin `admin` / `password`
-- Tests site port: http://localhost:8889
 - E2E: Playwright (`npm run test:e2e`)
 
 ### Boot order
