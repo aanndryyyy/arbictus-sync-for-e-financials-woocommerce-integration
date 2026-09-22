@@ -18,7 +18,7 @@
 		<exclude name="WordPress.WP.CronInterval.CronSchedulesInterval"/>
 	</rule>
 
-	<config name="text_domain" value="arbictus-sync-for-e-financials-woocommerce"/>
+	<config name="text_domain" value="arbictus-sync-for-e-financials-and-woocommerce"/>
 
 	<rule ref="WordPress.WP.Capabilities">
 		<properties>
@@ -32,6 +32,6 @@
 	<arg value="ps"/>
 	<arg name="extensions" value="php"/>
 
-	<file>./arbictus-sync-for-e-financials-woocommerce.php</file>
+	<file>./arbictus-sync-for-e-financials-and-woocommerce.php</file>
   <file>./src</file>
 </ruleset>

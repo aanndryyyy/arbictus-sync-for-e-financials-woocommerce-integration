@@ -66,7 +66,7 @@ final class RemoteSelectOptions {
 
 		$entry = [
 			/* translators: %s: saved e-Financials id */
-			$saved => \sprintf( __( 'ID %s (currently saved)', 'arbictus-sync-for-e-financials-woocommerce' ), $saved ),
+			$saved => \sprintf( __( 'ID %s (currently saved)', 'arbictus-sync-for-e-financials-and-woocommerce' ), $saved ),
 		];
 
 		// Right after the blank entry, where the merchant looks first.
@@ -194,11 +194,11 @@ final class RemoteSelectOptions {
 		$groups = [];
 
 		if ( $cash_or_bank !== [] ) {
-			$groups[ __( 'Cash and bank accounts', 'arbictus-sync-for-e-financials-woocommerce' ) ] = $cash_or_bank;
+			$groups[ __( 'Cash and bank accounts', 'arbictus-sync-for-e-financials-and-woocommerce' ) ] = $cash_or_bank;
 		}
 
 		if ( $other !== [] ) {
-			$groups[ __( 'Other accounts', 'arbictus-sync-for-e-financials-woocommerce' ) ] = $other;
+			$groups[ __( 'Other accounts', 'arbictus-sync-for-e-financials-and-woocommerce' ) ] = $other;
 		}
 
 		return $groups;

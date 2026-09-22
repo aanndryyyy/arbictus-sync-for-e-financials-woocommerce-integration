@@ -45,7 +45,7 @@ class OrderColumns implements ServiceInterface {
 	 */
 	public function add_column( array $columns ): array {
 
-		$label = __( 'e-Financials', 'arbictus-sync-for-e-financials-woocommerce' );
+		$label = __( 'e-Financials', 'arbictus-sync-for-e-financials-and-woocommerce' );
 
 		// Insert before WooCommerce's actions column, which conventionally stays last.
 		if ( ! isset( $columns['wc_actions'] ) ) {
@@ -135,11 +135,11 @@ class OrderColumns implements ServiceInterface {
 		}
 
 		if ( $credit > 0 ) {
-			$parts[] = \esc_html__( 'credit', 'arbictus-sync-for-e-financials-woocommerce' );
+			$parts[] = \esc_html__( 'credit', 'arbictus-sync-for-e-financials-and-woocommerce' );
 		}
 
 		if ( $error !== '' ) {
-			$parts[] = '<span style="color:#b32d2e" title="' . \esc_attr( $error ) . '">' . \esc_html__( 'error', 'arbictus-sync-for-e-financials-woocommerce' ) . '</span>';
+			$parts[] = '<span style="color:#b32d2e" title="' . \esc_attr( $error ) . '">' . \esc_html__( 'error', 'arbictus-sync-for-e-financials-and-woocommerce' ) . '</span>';
 		}
 
 		return \implode( ' · ', $parts );

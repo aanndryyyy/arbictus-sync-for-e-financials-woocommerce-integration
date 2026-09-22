@@ -25,7 +25,7 @@
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  *
- * Text Domain: arbictus-sync-for-e-financials-woocommerce
+ * Text Domain: arbictus-sync-for-e-financials-and-woocommerce
  */
 
 declare(strict_types=1);

@@ -224,7 +224,7 @@ class ProductEnsureService {
 				\esc_html(
 					\sprintf(
 						/* translators: %s: VAT percentage */
-						__( 'No e-Financials sale article is configured for VAT %s%%. Set a default sale article or add the rate to the VAT rate map.', 'arbictus-sync-for-e-financials-woocommerce' ),
+						__( 'No e-Financials sale article is configured for VAT %s%%. Set a default sale article or add the rate to the VAT rate map.', 'arbictus-sync-for-e-financials-and-woocommerce' ),
 						(string) $vat_rate
 					)
 				)
@@ -238,7 +238,7 @@ class ProductEnsureService {
 				\esc_html(
 					\sprintf(
 						/* translators: 1: sale article id, 2: article VAT percentage, 3: order line VAT percentage */
-						__( 'Sale article #%1$d is VAT %2$s%% but the order line is VAT %3$s%%. Add "%3$s" to the VAT rate → sale article map; e-Financials books VAT by article, so the rates must match. Shops with WooCommerce taxes disabled need a "0" entry.', 'arbictus-sync-for-e-financials-woocommerce' ),
+						__( 'Sale article #%1$d is VAT %2$s%% but the order line is VAT %3$s%%. Add "%3$s" to the VAT rate → sale article map; e-Financials books VAT by article, so the rates must match. Shops with WooCommerce taxes disabled need a "0" entry.', 'arbictus-sync-for-e-financials-and-woocommerce' ),
 						$sale_article,
 						(string) $article_rate,
 						(string) $vat_rate
@@ -334,7 +334,7 @@ class ProductEnsureService {
 
 		if ( $sale_article <= 0 ) {
 			throw new RuntimeException(
-				\esc_html__( 'e-Financials requires a default sale article before products can be created. Set it in the integration settings.', 'arbictus-sync-for-e-financials-woocommerce' )
+				\esc_html__( 'e-Financials requires a default sale article before products can be created. Set it in the integration settings.', 'arbictus-sync-for-e-financials-and-woocommerce' )
 			);
 		}
 

@@ -8,7 +8,7 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 >
     <projectFiles>
-        <file name="arbictus-sync-for-e-financials-woocommerce.php" />
+        <file name="arbictus-sync-for-e-financials-and-woocommerce.php" />
         <directory name="src" />
     </projectFiles>
 

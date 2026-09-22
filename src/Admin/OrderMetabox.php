@@ -58,7 +58,7 @@ class OrderMetabox implements ServiceInterface {
 
 		\add_meta_box(
 			'ef_order_metabox',
-			__( 'e-Financials', 'arbictus-sync-for-e-financials-woocommerce' ),
+			__( 'e-Financials', 'arbictus-sync-for-e-financials-and-woocommerce' ),
 			[ $this, 'render_metabox' ],
 			'shop_order',
 			'side',
@@ -90,7 +90,7 @@ class OrderMetabox implements ServiceInterface {
 	public function render_hpos_panel( WC_Order $order ): void {
 
 		echo '<div class="order_data_column" style="clear:both;padding-top:1em">';
-		echo '<h3>' . \esc_html__( 'e-Financials', 'arbictus-sync-for-e-financials-woocommerce' ) . '</h3>';
+		echo '<h3>' . \esc_html__( 'e-Financials', 'arbictus-sync-for-e-financials-and-woocommerce' ) . '</h3>';
 		$this->render_status( $order );
 		echo '</div>';
 	}
@@ -109,26 +109,26 @@ class OrderMetabox implements ServiceInterface {
 		$error      = OrderMeta::get_string( $order, OrderMetaKeys::LAST_ERROR );
 		$credit     = OrderMeta::get_int( $order, OrderMetaKeys::CREDIT_SALE_INVOICE_ID );
 
-		echo '<p><strong>' . \esc_html__( 'Invoice', 'arbictus-sync-for-e-financials-woocommerce' ) . ':</strong> ';
+		echo '<p><strong>' . \esc_html__( 'Invoice', 'arbictus-sync-for-e-financials-and-woocommerce' ) . ':</strong> ';
 		echo $invoice_id > 0
 			? \esc_html( $number !== '' ? $number : '#' . $invoice_id )
 			: '&mdash;';
 		echo '</p>';
 
 		if ( $mode !== '' ) {
-			echo '<p><strong>' . \esc_html__( 'Payment mode', 'arbictus-sync-for-e-financials-woocommerce' ) . ':</strong> ' . \esc_html( $mode ) . '</p>';
+			echo '<p><strong>' . \esc_html__( 'Payment mode', 'arbictus-sync-for-e-financials-and-woocommerce' ) . ':</strong> ' . \esc_html( $mode ) . '</p>';
 		}
 
 		if ( $delivered !== '' ) {
-			echo '<p><strong>' . \esc_html__( 'Delivered', 'arbictus-sync-for-e-financials-woocommerce' ) . ':</strong> ' . \esc_html( $delivered ) . '</p>';
+			echo '<p><strong>' . \esc_html__( 'Delivered', 'arbictus-sync-for-e-financials-and-woocommerce' ) . ':</strong> ' . \esc_html( $delivered ) . '</p>';
 		}
 
 		if ( $credit > 0 ) {
-			echo '<p><strong>' . \esc_html__( 'Credit invoice', 'arbictus-sync-for-e-financials-woocommerce' ) . ':</strong> #' . \esc_html( (string) $credit ) . '</p>';
+			echo '<p><strong>' . \esc_html__( 'Credit invoice', 'arbictus-sync-for-e-financials-and-woocommerce' ) . ':</strong> #' . \esc_html( (string) $credit ) . '</p>';
 		}
 
 		if ( $error !== '' ) {
-			echo '<p style="color:#b32d2e"><strong>' . \esc_html__( 'Last error', 'arbictus-sync-for-e-financials-woocommerce' ) . ':</strong> ' . \esc_html( $error ) . '</p>';
+			echo '<p style="color:#b32d2e"><strong>' . \esc_html__( 'Last error', 'arbictus-sync-for-e-financials-and-woocommerce' ) . ':</strong> ' . \esc_html( $error ) . '</p>';
 		}
 
 		if ( $invoice_id > 0 && $this->clients->can_make() ) {
@@ -136,7 +136,7 @@ class OrderMetabox implements ServiceInterface {
 				\admin_url( 'admin-ajax.php?action=' . self::AJAX_PDF . '&order_id=' . $order->get_id() ),
 				self::AJAX_PDF
 			);
-			echo '<p><a class="button" href="' . \esc_url( $url ) . '">' . \esc_html__( 'Download PDF', 'arbictus-sync-for-e-financials-woocommerce' ) . '</a></p>';
+			echo '<p><a class="button" href="' . \esc_url( $url ) . '">' . \esc_html__( 'Download PDF', 'arbictus-sync-for-e-financials-and-woocommerce' ) . '</a></p>';
 		}
 	}
 
@@ -153,7 +153,7 @@ class OrderMetabox implements ServiceInterface {
 	 */
 	private function die_not_found(): void {
 
-		\wp_die( \esc_html__( 'Order not found.', 'arbictus-sync-for-e-financials-woocommerce' ), 404 );
+		\wp_die( \esc_html__( 'Order not found.', 'arbictus-sync-for-e-financials-and-woocommerce' ), 404 );
 	}
 
 	/**
@@ -162,7 +162,7 @@ class OrderMetabox implements ServiceInterface {
 	public function ajax_download_pdf(): void {
 
 		if ( ! \current_user_can( 'manage_woocommerce' ) ) {
-			\wp_die( \esc_html__( 'Forbidden', 'arbictus-sync-for-e-financials-woocommerce' ), 403 );
+			\wp_die( \esc_html__( 'Forbidden', 'arbictus-sync-for-e-financials-and-woocommerce' ), 403 );
 		}
 
 		\check_admin_referer( self::AJAX_PDF );
@@ -178,7 +178,7 @@ class OrderMetabox implements ServiceInterface {
 		$invoice_id = OrderMeta::get_int( $order, OrderMetaKeys::SALE_INVOICE_ID );
 
 		if ( $invoice_id <= 0 ) {
-			\wp_die( \esc_html__( 'No e-Financials invoice on this order.', 'arbictus-sync-for-e-financials-woocommerce' ), 404 );
+			\wp_die( \esc_html__( 'No e-Financials invoice on this order.', 'arbictus-sync-for-e-financials-and-woocommerce' ), 404 );
 		}
 
 		try {
@@ -187,7 +187,7 @@ class OrderMetabox implements ServiceInterface {
 
 			if ( $contents === false || \strncmp( $contents, '%PDF', 4 ) !== 0 ) {
 				// Never hand the browser a non-PDF body under a PDF content type.
-				\wp_die( \esc_html__( 'e-Financials returned an unreadable PDF.', 'arbictus-sync-for-e-financials-woocommerce' ), 502 );
+				\wp_die( \esc_html__( 'e-Financials returned an unreadable PDF.', 'arbictus-sync-for-e-financials-and-woocommerce' ), 502 );
 			}
 
 			\nocache_headers();

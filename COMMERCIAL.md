@@ -23,7 +23,7 @@ You never need to pay to run this plugin legally.
 ## Updates are free, for everyone
 
 The plugin is distributed through the [WordPress.org plugin
-directory](https://wordpress.org/plugins/arbictus-sync-for-e-financials-woocommerce/). Every
+directory](https://wordpress.org/plugins/arbictus-sync-for-e-financials-and-woocommerce/). Every
 release — including compatibility updates as WordPress, WooCommerce and the
 e-Financials API change — reaches every install through the normal WordPress
 update mechanism, at no cost and with no licence key.

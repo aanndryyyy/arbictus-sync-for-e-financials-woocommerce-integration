@@ -52,11 +52,11 @@ class EmailNote implements ServiceInterface {
 		$label = $number !== '' ? $number : '#' . $id;
 
 		if ( $plain_text ) {
-			echo "\n" . \esc_html( \sprintf( /* translators: %s: invoice number */ __( 'e-Financials invoice: %s', 'arbictus-sync-for-e-financials-woocommerce' ), $label ) ) . "\n";
+			echo "\n" . \esc_html( \sprintf( /* translators: %s: invoice number */ __( 'e-Financials invoice: %s', 'arbictus-sync-for-e-financials-and-woocommerce' ), $label ) ) . "\n";
 
 			return;
 		}
 
-		echo '<p>' . \esc_html( \sprintf( /* translators: %s: invoice number */ __( 'e-Financials invoice: %s', 'arbictus-sync-for-e-financials-woocommerce' ), $label ) ) . '</p>';
+		echo '<p>' . \esc_html( \sprintf( /* translators: %s: invoice number */ __( 'e-Financials invoice: %s', 'arbictus-sync-for-e-financials-and-woocommerce' ), $label ) ) . '</p>';
 	}
 }

@@ -166,11 +166,11 @@ and order screens — not live syncing.
 
 ## Releasing to WordPress.org
 
-The plugin is published as **`arbictus-sync-for-e-financials-woocommerce`**. That slug is also the text
+The plugin is published as **`arbictus-sync-for-e-financials-and-woocommerce`**. That slug is also the text
 domain and the main file name, and it must stay in sync with all three.
 
 ```bash
-composer build          # dist/arbictus-sync-for-e-financials-woocommerce.zip, built from .distignore
+composer build          # dist/arbictus-sync-for-e-financials-and-woocommerce.zip, built from .distignore
 ```
 
 The script installs production-only dependencies, refuses to build when the plugin header
@@ -181,7 +181,7 @@ The script installs production-only dependencies, refuses to build when the plug
 ```bash
 npm start
 npx wp-env run cli wp plugin install <path-to-zip> --force
-npx wp-env run cli wp plugin check arbictus-sync-for-e-financials-woocommerce \
+npx wp-env run cli wp plugin check arbictus-sync-for-e-financials-and-woocommerce \
   --categories=general,plugin_repo,security,performance,accessibility --include-experimental
 ```
 
@@ -218,7 +218,7 @@ versus commercial distinction. You may run it on any number of sites, modify it,
 redistribute it under the same terms, free of charge and forever.
 
 Releases are distributed free through the
-[WordPress.org plugin directory](https://wordpress.org/plugins/arbictus-sync-for-e-financials-woocommerce/),
+[WordPress.org plugin directory](https://wordpress.org/plugins/arbictus-sync-for-e-financials-and-woocommerce/),
 so every install updates at no cost and there is no licence key or premium build. Paid
 subscriptions cover **support only** — a service, never permission to use the code, and
 never access to functionality. See **[COMMERCIAL.md](COMMERCIAL.md)**. When a subscription

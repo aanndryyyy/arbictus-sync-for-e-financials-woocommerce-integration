@@ -74,8 +74,8 @@ class OrderActions implements ServiceInterface {
 			return $actions;
 		}
 
-		$actions[ self::ACTION_SYNC ]    = __( 'Send / resend to e-Financials', 'arbictus-sync-for-e-financials-woocommerce' );
-		$actions[ self::ACTION_DELIVER ] = __( 'Deliver e-Financials invoice', 'arbictus-sync-for-e-financials-woocommerce' );
+		$actions[ self::ACTION_SYNC ]    = __( 'Send / resend to e-Financials', 'arbictus-sync-for-e-financials-and-woocommerce' );
+		$actions[ self::ACTION_DELIVER ] = __( 'Deliver e-Financials invoice', 'arbictus-sync-for-e-financials-and-woocommerce' );
 
 		return $actions;
 	}
@@ -116,7 +116,7 @@ class OrderActions implements ServiceInterface {
 		$invoice_id = OrderMeta::get_int( $order, OrderMetaKeys::SALE_INVOICE_ID );
 
 		if ( $invoice_id <= 0 ) {
-			$order->add_order_note( __( 'Cannot deliver: no e-Financials invoice on this order.', 'arbictus-sync-for-e-financials-woocommerce' ) );
+			$order->add_order_note( __( 'Cannot deliver: no e-Financials invoice on this order.', 'arbictus-sync-for-e-financials-and-woocommerce' ) );
 			$order->save();
 
 			return;
@@ -130,7 +130,7 @@ class OrderActions implements ServiceInterface {
 			$order->add_order_note(
 				\sprintf(
 					/* translators: %s: error */
-					__( 'e-Financials deliver failed: %s', 'arbictus-sync-for-e-financials-woocommerce' ),
+					__( 'e-Financials deliver failed: %s', 'arbictus-sync-for-e-financials-and-woocommerce' ),
 					$message
 				)
 			);
