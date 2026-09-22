@@ -5,7 +5,7 @@ Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.2
 Requires Plugins: woocommerce
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -112,6 +112,10 @@ CRUD API, so it works with both the legacy post storage and HPOS.
 3. The order metabox showing invoice status and the invoice PDF download.
 
 == Changelog ==
+
+= 1.0.2 =
+* The plugin is renamed to "Arbictus Sync for e-Arveldaja".
+* The bundled Guzzle HTTP client is updated to 8.2, which defaults HTTPS connections to TLS 1.2 or newer.
 
 = 1.0.1 =
 * The accounts dimension and cash account settings are now dropdowns loaded from e-Financials instead of raw ID fields.
