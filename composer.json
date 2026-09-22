@@ -24,7 +24,7 @@
     "require": {
         "php": "^8.2",
         "aanndryyyy/e-financials-php-client": "^0.1",
-        "guzzlehttp/guzzle": "^7.5",
+        "guzzlehttp/guzzle": "^8.2",
         "php-di/invoker": "^2.3",
         "php-di/php-di": "^7.1"
     },
