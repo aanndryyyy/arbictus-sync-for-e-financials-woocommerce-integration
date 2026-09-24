@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bc82fb65a003744db567d21ac47ef1fd",
+    "content-hash": "f6e7967546d35017825d7d0ce37cf12f",
     "packages": [
         {
             "name": "aanndryyyy/e-financials-php-client",
-            "version": "v0.1.1",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aanndryyyy/e-financials-php-client.git",
-                "reference": "34c743f6d26da2532087f36a0732a2a1337b8c7e"
+                "reference": "73a472d565b90e0d5925810a224580df54b0393a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aanndryyyy/e-financials-php-client/zipball/34c743f6d26da2532087f36a0732a2a1337b8c7e",
-                "reference": "34c743f6d26da2532087f36a0732a2a1337b8c7e",
+                "url": "https://api.github.com/repos/aanndryyyy/e-financials-php-client/zipball/73a472d565b90e0d5925810a224580df54b0393a",
+                "reference": "73a472d565b90e0d5925810a224580df54b0393a",
                 "shasum": ""
             },
             "require": {
@@ -29,7 +29,6 @@
                 "psr/http-message": "^2.0.0"
             },
             "require-dev": {
-                "cweagans/composer-patches": "^1.7.3",
                 "guzzlehttp/guzzle": "^8.0.1",
                 "guzzlehttp/psr7": "^3.0.0",
                 "laravel/pint": "^1.30.3",
@@ -37,7 +36,7 @@
                 "nunomaduro/collision": "^8.9.5",
                 "pestphp/pest": "^5.0.2",
                 "pestphp/pest-plugin-arch": "^5.0.0",
-                "pestphp/pest-plugin-mutate": "^5.0.0",
+                "pestphp/pest-plugin-mutate": "^5.0.2",
                 "pestphp/pest-plugin-type-coverage": "^5.0.0",
                 "phpstan/phpstan": "^2.2.7",
                 "phpstan/phpstan-deprecation-rules": "^2.0.5",
@@ -49,13 +48,6 @@
                 "nyholm/psr7": "A lightweight PSR-7/PSR-17 implementation; pair with symfony/http-client or another PSR-18 client"
             },
             "type": "library",
-            "extra": {
-                "patches": {
-                    "pestphp/pest-plugin-mutate": {
-                        "Fix php-code-coverage 14 coverage-php array format (pestphp/pest#1790)": "patches/pest-plugin-mutate-coverage-php-14.patch"
-                    }
-                }
-            },
             "autoload": {
                 "files": [
                     "src/EFinancials.php"
@@ -105,7 +97,7 @@
                 "issues": "https://github.com/aanndryyyy/e-financials-php-client/issues",
                 "source": "https://github.com/aanndryyyy/e-financials-php-client"
             },
-            "time": "2026-08-06T10:12:40+00:00"
+            "time": "2026-09-22T14:14:37+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
