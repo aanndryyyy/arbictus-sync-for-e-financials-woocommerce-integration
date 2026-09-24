@@ -16,7 +16,6 @@
  * Author URI: https://arbictus.eu
  *
  * Requires at least: 6.5
- * Tested up to: 7.1
  * Requires PHP: 8.2
  * Requires Plugins: woocommerce
  * WC requires at least: 8.2

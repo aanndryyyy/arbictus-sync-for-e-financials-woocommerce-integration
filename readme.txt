@@ -1,5 +1,5 @@
 === Arbictus Sync for e-Arveldaja ===
-Contributors: aanndryyyy
+Contributors: arbictus, aanndryyyy
 Tags: accounting, invoices, bookkeeping, e-arveldaja, estonia
 Requires at least: 6.5
 Tested up to: 7.1
