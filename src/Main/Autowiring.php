@@ -66,11 +66,14 @@ class Autowiring {
 
 		foreach ( $project_reflection_classes as $project_class => $refl_class ) {
 
-			// Skip abstract classes, interfaces & traits, and non-service classes.
+			// Skip abstract classes, interfaces & traits, the bootstrap itself (Main is a
+			// ServiceInterface but needs Composer's prefixes, so the container can't build it),
+			// and non-service classes.
 			if (
 				$refl_class->isAbstract() ||
 				$refl_class->isInterface() ||
 				$refl_class->isTrait() ||
+				$refl_class->isSubclassOf( self::class ) ||
 				! (
 					$refl_class->implementsInterface( ServiceInterface::class ) ||
 					$refl_class->implementsInterface( ServiceCliInterface::class )

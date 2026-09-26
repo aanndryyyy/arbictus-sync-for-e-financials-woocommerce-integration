@@ -47,6 +47,22 @@ find "${STAGE}" \
 	\( -name '.DS_Store' -o -name '*.log' -o -name '.env' -o -name '.git*' \) \
 	-delete
 
+# .distignore is a denylist, so a new local folder (e.g. an editor or agent
+# config dir) slips through silently. Fail loudly on anything not expected at
+# the plugin root instead.
+ALLOWED_TOP_LEVEL=" ${SLUG}.php composer.json LICENSE readme.txt src vendor "
+for entry in "${STAGE}"/* "${STAGE}"/.[!.]*; do
+	[ -e "${entry}" ] || continue
+	name="$(basename "${entry}")"
+	case "${ALLOWED_TOP_LEVEL}" in
+		*" ${name} "*) ;;
+		*)
+			echo "error: unexpected '${name}' in the plugin root; add it to .distignore or ALLOWED_TOP_LEVEL." >&2
+			exit 1
+			;;
+	esac
+done
+
 echo "==> Pruning vendor"
 # WordPress.org expects a production zip "without development tools". Composer's
 # --no-dev drops dev packages but leaves behind the bin shims from a previous dev

@@ -2,11 +2,18 @@
 # Consumed by bin/build-zip.sh and .github/workflows/playground.yml.
 
 /.git
+/.agents
+/.claude
+/.codex
+/.gemini
+/.idea
 /.github
 /.devcontainer
 /.cursor
 /.vscode
 /.omc
+/.phpunit.cache
+/.wp-env
 /.wordpress-org
 /bin
 /build
@@ -26,6 +33,7 @@
 /.wp-env.json
 /.wp-env.override.json
 /AGENTS.md
+/CLAUDE.md
 /COMMERCIAL.md
 /README.md
 /composer.lock
@@ -35,3 +43,6 @@
 /phpstan.neon.dist
 /phpunit.xml.dist
 /psalm.xml.dist
+/playwright-report
+/test-results
+/xdebug.log

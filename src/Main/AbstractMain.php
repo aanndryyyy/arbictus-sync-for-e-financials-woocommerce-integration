@@ -186,15 +186,9 @@ abstract class AbstractMain extends Autowiring implements ServiceInterface {
 			$definitions[ $service_key ] = $autowire->constructor( ...$this->get_di_dependencies( $service_values ) );
 		}
 
-		$builder = new ContainerBuilder();
-
-		if ( \defined( 'WP_ENVIRONMENT_TYPE' ) && ( \WP_ENVIRONMENT_TYPE === 'production' || \WP_ENVIRONMENT_TYPE === 'staging' ) ) {
-			$file = \explode( '\\', $this->namespace );
-
-			$builder->enableCompilation( __DIR__ . '/Cache', "{$file[0]}CompiledContainer" );
-		}
-
-		return $builder->addDefinitions( $definitions )->build();
+		// No container compilation: it writes into the plugin directory, which is
+		// read-only on many hosts and would fatal on every request.
+		return ( new ContainerBuilder() )->addDefinitions( $definitions )->build();
 	}
 
 	/**
